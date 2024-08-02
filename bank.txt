@@ -1,0 +1,23 @@
+cls_code	cls_desc
+BPI	Bank of Philippine Island
+FCB	First Consolidated Bank
+METRO BANK	Metro Bank
+PNB	Philippine National Bank
+BDO	Banko De Oro
+DBP	Development Bank of the Philippines
+LBP	Land Bank of the Philippines
+UCPB	United Coconut Planters Bank
+SBC	Security Bank Corporation
+EASTWEST	EastWest
+PS BANK	Philippine Savings Bank
+WEALTHBANK	Wealth Bank
+RCBC	Rizal Commercial Banking Corporation
+BOC	Bank of Commerce
+AUB	Asia United Bank
+CB	China Bank
+CSB	City Savings Bank
+RB	Robinsons Bank
+UB	Union Bank
+BB	Business Bank
+ONB	One Network Bank
+PBB	Philippine Business Bank
