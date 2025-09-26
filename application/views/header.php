@@ -16,6 +16,38 @@
         <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script> -->
         <!-- <link href="<?php echo base_url(); ?>assets/css/jquery.dataTables.min.css" rel="stylesheet" crossorigin="anonymous" /> -->
         <script src="<?php echo base_url(); ?>assets/js/all.min.js" crossorigin="anonymous"></script>
+        <script src="<?php echo base_url(); ?>assets/js/Chart.js" crossorigin="anonymous"></script>
+
+        <style>
+
+            
+        #loaderOverlay {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px; /* or use 100% if parent has a defined height */
+            width: 100%;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+    
+        .loading-text {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .ui-datepicker {
+            font-size: 100px;
+            background: #f8f9fa;
+            border: 1px solid #ccc;
+            padding: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+        }
+        </style>
         <script>
             // function startTime() {
             // var today = new Date();
@@ -187,28 +219,30 @@
                                 Salesman Record
                             </a>
                             <?php } ?>
-                            <?php if($this->session->userdata('type')=='Cashier') { ?>
+                            <?php if($this->session->userdata('type')=='Cashier' || $this->session->userdata('type')=='Admin') { ?>
                             <div class="sb-sidenav-menu-heading">Cashier</div>
-                            <!-- <a class="nav-link" href="<?= base_url('/cashier_payment'); ?>">
-                                <div class="sb-nav-link-icon"><i class="far fa-money-bill-alt"></i></div>
-                                Payments
-                            </a>
-                            <a class="nav-link" href="<?= base_url('/cashierdenom'); ?>">
-                                <div class="sb-nav-link-icon"><i class="fas fa-dollar-sign"></i></div>
-                                Denomination
+                            
+                            
+                            <!-- <a class="nav-link" href="<?= base_url('/remitdate'); ?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
+                                Salesman Check Entry
                             </a> -->
-                            <a class="nav-link" href="<?= base_url('/remitdate'); ?>">
+
+                            <a class="nav-link" href="<?= base_url('/smdenomdata'); ?>">
                                 <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
                                 Salesman Check Entry
                             </a>
-                            <a class="nav-link" href="<?= base_url('/checkclearingdate'); ?>">
-                                <div class="sb-nav-link-icon"><i class="fas fa-check-square"></i></div>
-                                Check Clearing
+
+                            <a class="nav-link" href="<?= base_url('/admindate'); ?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
+                                Salesman Payments
                             </a>
-                            <!-- <a class="nav-link" href="<?= base_url('/accountrecorddate'); ?>">
-                                <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
-                                Accountability
-                            </a> -->
+                            
+                            <a class="nav-link" href="<?= base_url('/retdaterange'); ?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-check-square"></i></div>
+                                Returned Checks
+                            </a>
+                            
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Reports" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
                                 Reports
@@ -216,44 +250,72 @@
                             </a>
                             <div class="collapse" id="Reports" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?= base_url('/accountdate'); ?>">Accountability</a>
+                                    <a class="nav-link" href="<?= base_url('/colsumdaterange'); ?>">Collection Summary Report</a>
                                     <a class="nav-link" href="<?= base_url('/pdcdcdate'); ?>">PDC & DC Report</a>
-                                    <a class="nav-link" href="<?= base_url('/colsum'); ?>">Collection Summary</a>
+                                    <a class="nav-link" href="<?= base_url('/colsum'); ?>">Collection Summary per Salesman</a>
+                                    <a class="nav-link" href="<?= base_url('/colsumdual'); ?>">Collection Summary Report (XTRUCK-MPDI)</a>
+                                    <a class="nav-link" href="<?= base_url('/dvsrrsum'); ?>">DV SRR Report</a>
+                                    <a class="nav-link" href="<?= base_url('/palawandaterange'); ?>">Palawan Remittance Monitoring</a>
                                 </nav>
                             </div>
-                            <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#CashierRecord" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Cashier Record
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="CashierRecord" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?= base_url('/cashier_date'); ?>">Payments</a>
-                                    <a class="nav-link" href="<?= base_url('/cashier_ledger'); ?>">Denomination</a>
-                                </nav>
-                            </div> -->
+                            
                             <?php } ?>
-                            <div class="sb-sidenav-menu-heading">Masterfile</div>
+                            
                             <?php if($this->session->userdata('type')=='Admin') { ?>
-                            <?php if($this->session->userdata('location')=='LDI') { ?>
-                            <!-- <a class="nav-link" href="<?= base_url('/importldi'); ?>">
-                                <div class="sb-nav-link-icon"><i class="fas fa-file-import"></i></div>
-                                Import for LDI
-                            </a> -->
-                            <!-- <a class="nav-link" href="<?= base_url('/customers'); ?>">
-                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                Customer
-                            </a> -->
-                            <?php }} ?>
+                                <div class="sb-sidenav-menu-heading">Admin</div>
+                                <a class="nav-link" href="<?= base_url('/admindate'); ?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
+                                Salesman Payments
+                                </a>
+
+                                <a class="nav-link" href="<?= base_url('/admindatepal'); ?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
+                                Salesman Palawan Remittance
+                                </a>
+
+                                <a class="nav-link" href="<?= base_url('/admindatesat'); ?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
+                                Salesman Satellite Payments
+                                </a>
+
+                                <a class="nav-link" href="<?= base_url('/admindateutc'); ?>">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
+                                    Salesman Under the Cup Payments
+                                </a>
+
+                                <a class="nav-link" href="<?= base_url('/admindatedenom'); ?>">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
+                                    Salesman Denominations
+                                </a>
+                                <a class="nav-link" href="<?= base_url('/admindateret'); ?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
+                                Salesman Returns
+                                </a>
+
+                                <a class="nav-link" href="<?= base_url('/admindatebo'); ?>">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
+                                    Salesman BO
+                                </a>
+
+                                <a class="nav-link" href="<?= base_url('/admindateinc'); ?>">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-check"></i></div>
+                                    Salesman Incentives Balance
+                                </a>
+                            <?php } ?>
                             <?php if($this->session->userdata('type')=='Cashier' || $this->session->userdata('type')=='Admin') { ?>
                             <a class="nav-link" href="<?= base_url('/import'); ?>">
                                 <div class="sb-nav-link-icon"><i class="fas fa-file-import"></i></div>
                                 Import
                             </a>
-                            <?php if($this->session->userdata('location')=='LDI') { ?>
+                            <?php if($this->session->userdata('location')=='LDI' || $this->session->userdata('location')=='LDI-CDC' || $this->session->userdata('location')=='LDI-UDC') { ?>
                             <a class="nav-link" href="<?= base_url('/importldi_sm'); ?>">
                                 <div class="sb-nav-link-icon"><i class="fas fa-file-import"></i></div>
                                 Import for LDI
+                            </a>
+
+                            <a class="nav-link" href="<?= base_url('/exportldi_sm'); ?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-file-export"></i></div>
+                                Export for LDI
                             </a>
                             <?php } ?>
                             <a class="nav-link" href="<?= base_url('/export'); ?>">
@@ -274,6 +336,38 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                                 User
                             </a>
+
+                            <a class="nav-link" href="<?= base_url('/logs'); ?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                                Manager's Key Logs
+                            </a>
+                            <?php } ?>
+
+                            <?php if( $this->session->userdata('type')=='Cashier-IAD' ) { ?>
+                            <div class="sb-sidenav-menu-heading">IAD</div>
+                            
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Reports" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                                Reports
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="Reports" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?= base_url('/colsumdaterange'); ?>">Collection Summary Report</a>
+                                    <a class="nav-link" href="<?= base_url('/pdcdcdate'); ?>">PDC & DC Report</a>
+                                    <a class="nav-link" href="<?= base_url('/colsum'); ?>">Collection Summary per Salesman</a>
+                                    <a class="nav-link" href="<?= base_url('/dvsrrsum'); ?>">DV SRR Report</a>
+                                    <a class="nav-link" href="<?= base_url('/palawandaterange'); ?>">Palawan Remittance Monitoring</a>
+                                </nav>
+                            </div>
+
+                            <a class="nav-link" href="<?= base_url('/exportldi_sm'); ?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-file-export"></i></div>
+                                Export for LDI
+                            </a>
+
+                            
+                            
                             <?php } ?>
                         </div>
                     </div>

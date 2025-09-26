@@ -2,8 +2,8 @@
     <div class="container-fluid">
         <h4 class="mt-4">Customer</h4><br/>
         <div class="col-xl-5">
-        <button type="button" class="btn btn-info btn-sm" style="float: right;margin-left:5px" data-toggle="modal" data-toggle="modal" data-controls-modal="#customerModal" data-backdrop="static" data-keyboard="false" data-target="#customerModal" onclick=customer_masterfile()>View Customer</button>
-        <button type="button" class="btn btn-info btn-sm" style="float: right;margin-left:5px" data-toggle="modal" data-toggle="modal" data-controls-modal="#customerModal3" data-backdrop="static" data-keyboard="false" data-target="#customerModal3" onclick=customer_masterfile3()>View CCD Customer</button>
+        <button type="button" class="btn btn-info btn-sm" style="float: right;margin-left:5px" data-toggle="modal" data-toggle="modal" data-controls-modal="#customerModal" data-backdrop="static" data-keyboard="false" data-target="#customerModal" onclick=customer_masterfile5()>View Customer</button>
+        <button type="button" class="btn btn-info btn-sm" style="float: right;margin-left:5px" data-toggle="modal" data-toggle="modal" data-controls-modal="#customerModalCcd" data-backdrop="static" data-keyboard="false" data-target="#customerModalCcd" onclick=customer_masterfileccd()>View CCD Customer</button>
         <!-- <button type="button" class="btn btn-info btn-sm" style="float: right" data-toggle="modal" data-toggle="modal" data-controls-modal="#customerModal4" data-backdrop="static" data-keyboard="false" data-target="#customerModal4" onclick=customer_masterfile4()>View WDG Customer</button> -->
         <br/><br/>
             <form method="post" id="file_submit">
@@ -38,18 +38,18 @@
         <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Customer Masterfile</h4>
+            <h4 class="modal-title">COD Customer Masterfile</h4>
         </div>
         <div class="modal-body">
             <form method="post" id="user_submit">
-                <div id="customer_masterfile">
+                <div id="customer_masterfile4">
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table mr-1"></i>
                             Select customer to proceed check input.
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive customermasterfile">
+                            <div class="table-responsive customermasterfile4">
                             </div>
                         </div>
                     </div>
@@ -78,7 +78,36 @@
                             Select customer to add to your customer masterfile.
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive customermasterfile2">
+                            <div class="table-responsive 42">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div id="customerModalCcd" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">(CCD) Customer Masterfile</h4>
+        </div>
+        <div class="modal-body">
+            <form method="post" id="user_submit">
+                <div id="customer_masterfileccd">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table mr-1"></i>
+                            Select customer to add to your customer masterfile.
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive customermasterfileccd">
                             </div>
                         </div>
                     </div>

@@ -8,7 +8,6 @@
             parent:: __construct();
             $this->check_session();
             $this->load->model('Model_Payments');
-            $this->load->model('Model_Cashier_Sm');
         }
 
         public function index()
@@ -117,38 +116,14 @@
             }
         }
 
-        // public function delete_payment($id)
-        // {   
-        //     $this->Model_Payments->delete_payment($this->input->post('ids'));
-        // }
-
-        public function delete_payment()
+        public function delete_payment($id)
         {   
-            $collection = 0.00;
-            $remittance = 0.00;
-
-            $dc_amt = 0.00;
-            $pdc_amt = 0.00;
-
-            $result = $this->Model_Cashier_Sm->getSmDenombyDenomId($this->input->post('denomid'));
-            $result2 = $this->Model_Payments->getPayment($this->input->post('ids'));
-
-            $collection = $result->total_remittance - $result2->amount;
-            $remittance = $result->total_collection - $result2->amount;
-            $dc_pc      = ($result2->type == 'DC') ? ($result->dc_pcs - 1) : $result->dc_pcs;
-            $pdc_pc     = ($result2->type == 'PDC') ? ($result->pdc_pcs - 1) : $result->pdc_pcs;
-
-            $dc_amt     = ($result2->type == 'DC') ? ($result->total_dc - $result2->amount) : $result->total_dc;
-            $pdc_amt    = ($result2->type == 'PDC') ? ($result->total_pdc - $result2->amount) : $result->total_pdc;
-
-            var_dump($collection, $remittance, $dc_pc, $pdc_pc, $dc_amt, $pdc_amt);
-            //var_export($result);
-            //var_export($result2);
-            //die();
-
-            $this->Model_Payments->edit_sm_payment($collection, $remittance, $dc_pc, $pdc_pc, $dc_amt, $pdc_amt, $this->input->post('denomid'));
             $this->Model_Payments->delete_payment($this->input->post('ids'));
+        }
 
+        public function delete_payment_ldi($id)
+        {   
+            $this->Model_Payments->delete_payment_ldi($this->input->post('ids'));
         }
 
         public function view_cashier_payment()
@@ -206,6 +181,124 @@
                 <div class="form-group col-md-6">
                     <label for="amount">Check Amount</label>
                     <input type="text" class="form-control" style="text-align: center;background-color: white" name="amount" id="amount" autocomplete="off" value="'.number_format($result->amount,2).'" readonly>
+                </div>
+            </div>';
+        }
+
+        public function view_cashier_payment_ldi()
+        {
+            $result = $this->Model_Payments->getPayment($_POST['ids']);
+            echo '<div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="code">Code</label>
+                <input type="text" class="form-control" style="text-align: center;background-color: white" name="code" id="code" placeholder="Code" value="'.$result->cus_code.'" readonly>
+            </div>
+            <div class="form-group col-md-8">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" style="text-align: center;background-color: white" name="name" id="name" value="'.$result->name.'" readonly>
+            </div>
+            </div>
+            <div class="form-row">';
+                if($result->check_type=="Post Dated Check"){$pdc="checked";}else{$pdc="";}
+                if($result->check_type=='Dated Check'){$dc='checked';}else{$dc='';}
+            echo '<div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="check" id="DC" '.$dc.' value="Dated Check" disabled>
+                    <label class="form-check-label" for="DC">Dated Check (DC)</label>
+                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="check" id="PDC" value="Post Dated Check" '.$pdc.' disabled>
+                    <label class="form-check-label" for="PDC">Post Dated Check (PDC)</label>
+                </div>
+            </div><br/>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="checkno">Check No.</label>
+                    <input type="text" class="form-control" style="text-align: center;background-color: white" name="checkno" id="checkno" autocomplete="off" value="'.$result->check_no.'" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="duedate">Check Date</label>
+                    <input type="date" class="form-control" style="text-align: center;background-color: white" name="duedate" id="duedate" autocomplete="off" value="'.$result->due_date.'" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="accname">Account Name</label>
+                    <input type="text" class="form-control" style="text-align: center;background-color: white" name="accname" id="accname" autocomplete="off" value="'.$result->acc_name.'" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="accnum">Account Number</label>
+                    <input type="text" class="form-control" style="text-align: center;background-color: white" name="accnum" id="accnum" autocomplete="off" value="'.$result->acc_no.'" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="bank">Bank</label>
+                    <select class="form-control" name="bank" id="bank" disabled>';
+                        echo '<option value="'.$result->check_bank.'">'.$result->check_bank ."-". $result->bname.'</option>';
+                echo '</select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="amount">Check Amount</label>
+                    <input type="text" class="form-control" style="text-align: center;background-color: white" name="amount" id="amount" autocomplete="off" value="'.number_format($result->pay_amount,2).'" readonly>
+                </div>
+            </div>';
+        }
+
+        public function view_cashier_payment_ldi_ext()
+        {
+            $result = $this->Model_Payments->getPayment3($_POST['ids']);
+            echo '<div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="code">Code</label>
+                <input type="text" class="form-control" style="text-align: center;background-color: white" name="code" id="code" placeholder="Code" value="'.@$result->cus_code.'" readonly>
+            </div>
+            <div class="form-group col-md-8">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" style="text-align: center;background-color: white" name="name" id="name" value="'.$result->name.'" readonly>
+            </div>
+            </div>
+            <div class="form-row">';
+                if($result->check_type=="Post Dated"){$pdc="checked";}else{$pdc="";}
+                if($result->check_type=='Dated'){$dc='checked';}else{$dc='';}
+            echo '<div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="check" id="DC" '.$dc.' value="Dated" disabled>
+                    <label class="form-check-label" for="DC">Dated Check (DC)</label>
+                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="check" id="PDC" value="Post Dated" '.$pdc.' disabled>
+                    <label class="form-check-label" for="PDC">Post Dated Check (PDC)</label>
+                </div>
+            </div><br/>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="checkno">Check No.</label>
+                    <input type="text" class="form-control" style="text-align: center;background-color: white" name="checkno" id="checkno" autocomplete="off" value="'.$result->check_no.'" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="duedate">Check Date</label>
+                    <input type="date" class="form-control" style="text-align: center;background-color: white" name="duedate" id="duedate" autocomplete="off" value="'.$result->due_date.'" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="accname">Account Name</label>
+                    <input type="text" class="form-control" style="text-align: center;background-color: white" name="accname" id="accname" autocomplete="off" value="'.$result->acc_name.'" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="accnum">Account Number</label>
+                    <input type="text" class="form-control" style="text-align: center;background-color: white" name="accnum" id="accnum" autocomplete="off" value="'.$result->acc_no.'" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="bank">Bank</label>
+                    <select class="form-control" name="bank" id="bank" disabled>';
+                        echo '<option value="'.$result->check_bank.'">'.$result->check_bank ."-". $result->bname.'</option>';
+                echo '</select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="amount">Check Amount</label>
+                    <input type="text" class="form-control" style="text-align: center;background-color: white" name="amount" id="amount" autocomplete="off" value="'.number_format($result->check_amount,2).'" readonly>
                 </div>
             </div>';
         }

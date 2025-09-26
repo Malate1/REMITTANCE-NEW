@@ -13,47 +13,73 @@
     $pdf->SetFont('Times','',8);
     $x = 0;
 
-    $pdf->SetFont('Arial','B',12);
-    $pdf->Cell(190,-5,$this->session->userdata('location') . " - Sales Remittance Report",0,1,'C');
-
-    if($result->remarks==""){
-        $sm = $result->full_name;
+    $pdf->SetFont('Arial','B',11);
+    if($result->bu == 'XTRUCK'){
+        $bu = 'XTRUCK-LDI';
     }else{
-        $sm = $result->full_name."/".$result->remarks;
+        $bu = $result->bu;
     }
 
-    $pdf->SetFont('Arial','B',11);
+    if($result->location == 'LDI'){
+        $loc = 'HO';
+    }elseif($result->location == 'LDI-UDC'){
+        $loc = 'UDC';
+    }elseif($result->location == 'LDI-CDC'){
+        $loc = 'CDC';
+    }
+    $pdf->Cell(190, -5, $bu . " - " . @$loc . " - Sales Remittance Report", 0, 1, 'C');
+
+
+    
+    $sm = $result->full_name;
+    
+
+    $pdf->SetFont('Arial','B',8);
     $pdf->Ln('8');
-    $pdf->Cell(50,5,"Sales Representative : ",0,1,'C');
+    $pdf->Cell(42,5,"Sales Representative : ",0,1,'C');
     $pdf->setx('55');
-    $pdf->Cell(140,-5,$sm,0,1,'L');
+    $pdf->Cell(140,-5,utf8_decode($sm),0,1,'L');
+    
 
-    $pdf->Cell(320,5,"No. :",0,1,'C');
+    $pdf->Cell(320,5,"SRR No. : ",0,1,'C');
     $pdf->setx('175');
-    $pdf->Cell(350,-5,$result->denom_id,0,1,'L');
+    $pdf->Cell(350,-5,@$result->manualsrr,0,1,'L');
 
-    $pdf->SetFont('Arial','B',11);
+    $pdf->SetFont('Arial','B',8);
     $pdf->Ln('5');
     $pdf->Cell(20,5,"Date : ",0,1,'C');
     $pdf->setx('25');
     $pdf->Cell(70,-5,date("F d, Y",strtotime($result->date_added)),0,1,'L');
 
-    $pdf->SetFont('Arial','B',11);
+    $pdf->SetFont('Arial','B',8);
     $pdf->Ln('0');
-    $pdf->Cell(61,25,"COLLECTION BREAKDOWN",0,1,'C');
+    $pdf->Cell(190,15,"COLLECTION BREAKDOWN",0,1,'C');
+    $pdf->setY($pdf->GetY() + 8);
+    $pdf->setx('140');
+    $pdf->Cell(320,-28,"Total Accountability :",0,1,'L');
+    $pdf->setx('175');
+    // $pdf->Cell(348,25,'1,000,000.00',0,1,'L');
+    $pdf->Cell(348,28,number_format($result->total_remittance + @$result->total_palawan,2),0,1,'L');
 
-    $pdf->setx('125');
-    $pdf->Cell(290,-25,"Total Accountability :",0,1,'L');
-    $pdf->setx('170');
-    $pdf->Cell(348,25,number_format($result->total_remittance,2),0,1,'L');
+    
+
+    $pdf->setX('140');
+    $pdf->Cell(290, -21, "Total Incentives :", 0, 1, 'L');
+    $pdf->setX('175');
+    $pdf->Cell(348, 21, number_format($result->sm_inc, 2), 0, 1, 'L');
+
+    
 
     $deduct = $result->vat + $result->bo;
 
-    $total_amount = $result->total_returns + $result->total_collection - $deduct;
+    $total_amount = $result->total_collection + $result->sm_inc;
 
-    $rem_amt = $total_amount-$result->total_remittance;
+    // $rem_amt = $result->total_remittance - $result->total_collection;
 
-    if($result->total_remittance<$total_amount){
+    $rem_amt = $total_amount - $result->total_remittance;
+
+    if($result->total_remittance < $total_amount){
+    // if($result->total_remittance < $result->total_collection){
         $rem = 'Over ('.number_format($rem_amt,2).')';
     }elseif($result->total_remittance>$total_amount){
         $rem = 'Short ('.number_format($rem_amt,2).')';
@@ -67,19 +93,19 @@
         $ret = number_format($result->total_returns,2);
     }
 
-    $pdf->SetFont('Arial','B',11);
+    $pdf->SetFont('Arial','B',8);
     $pdf->Ln('1');
-    $pdf->Cell(27,-10,"Returns : ",0,1,'R');
+    $pdf->Cell(20,-30,"Returns : ",0,1,'R');
     $pdf->setx('35');
-    $pdf->Cell(90,10,$ret,0,1,'L');
+    $pdf->Cell(90,30,$ret,0,1,'L');
 
-    $pdf->SetFont('Arial','B',11);
+    $pdf->SetFont('Arial','B',8);
     $pdf->Ln('0');
-    $pdf->Cell(290,-10,"Remarks : ",0,1,'C');
-    $pdf->setx('165');
-    $pdf->Cell(340,10,$rem,0,1,'L');
+    $pdf->Cell(25,-16,"Remarks : ",0,1,'C');
+    $pdf->setx('35');
+    $pdf->Cell(90,16,$rem . ' - ' .$result->remarks,0,1,'L');
 
-    $pdf->Ln('-2');
+    $pdf->Ln('-5');
     $pdf->SetFillColor(220,220,220);
     $pdf->SetTextColor(0);
     $pdf->SetDrawColor(0,0,0);
@@ -87,11 +113,11 @@
     $pdf->SetFont('','B');
 
     $pdf->setx('15');
-    $pdf->Cell(50,7,'Notes',1,0,'C',true);
-    $pdf->Cell(60,7,'Quantity',1,0,'C',true);
-    $pdf->Cell(69,7,'Amount',1,0,'C',true);
+    $pdf->Cell(50,5,'Notes',1,0,'C',true);
+    $pdf->Cell(60,5,'Quantity',1,0,'C',true);
+    $pdf->Cell(69,5,'Amount',1,0,'C',true);
 
-    $pdf->Ln('7');
+    $pdf->Ln('5');
     $pdf->setx('15');
     $pdf->Cell(50,5,"1,000",1,0,'C');
     $pdf->Cell(60,5,$result->qty_1000,1,0,'C');
@@ -139,23 +165,23 @@
     $pdf->Cell(60,5,"",1,0,'C');
     $pdf->Cell(69,5,number_format($result->total_cash,2),1,0,'R');
 
-    $pdf->Ln('5');
-    $pdf->setx('15');
-    $pdf->Cell(50,5,"Total Returns",1,0,'C');
-    $pdf->Cell(60,5,"",1,0,'C');
-    $pdf->Cell(69,5,number_format($result->total_returns,2),1,0,'R');
+    // $pdf->Ln('5');
+    // $pdf->setx('15');
+    // $pdf->Cell(50,5,"Total Returns",1,0,'C');
+    // $pdf->Cell(60,5,"",1,0,'C');
+    // $pdf->Cell(69,5,number_format($result->total_returns,2),1,0,'R');
 
-    $pdf->Ln('5');
-    $pdf->setx('15');
-    $pdf->Cell(50,5,"Total W/Tax",1,0,'C');
-    $pdf->Cell(60,5,"",1,0,'C');
-    $pdf->Cell(69,5,number_format($result->vat,2),1,0,'R');
+    // $pdf->Ln('5');
+    // $pdf->setx('15');
+    // $pdf->Cell(50,5,"Total W/Tax",1,0,'C');
+    // $pdf->Cell(60,5,"",1,0,'C');
+    // $pdf->Cell(69,5,number_format($result->vat,2),1,0,'R');
 
-    $pdf->Ln('5');
-    $pdf->setx('15');
-    $pdf->Cell(50,5,"Total B.O",1,0,'C');
-    $pdf->Cell(60,5,"",1,0,'C');
-    $pdf->Cell(69,5,number_format($result->bo,2),1,0,'R');
+    // $pdf->Ln('5');
+    // $pdf->setx('15');
+    // $pdf->Cell(50,5,"Total B.O",1,0,'C');
+    // $pdf->Cell(60,5,"",1,0,'C');
+    // $pdf->Cell(69,5,number_format($result->bo,2),1,0,'R');
 
     $pdf->Ln('5');
     $pdf->setx('15');
@@ -171,20 +197,115 @@
 
     $pdf->Ln('5');
     $pdf->setx('15');
-    $pdf->Cell(179,5,"Total Remittance :   ".number_format($result->total_collection,2),1,0,'R');
+    $pdf->Cell(50,5,"Total Actual Remittance   ",1,0,'C');
+    $pdf->Cell(60,5,"",1,0,'C');
+    $pdf->Cell(69,5,number_format($result->total_collection,2),1,0,'R');
+    // if ($result->bu != 'OPLAN') {
+    //     $pdf->Ln('5');
+    //     $pdf->setx('15');
+    //     $pdf->Cell(50,5,"Total Palawan Remittance   ",1,0,'C');
+    //     $pdf->Cell(60,5,"",1,0,'C');
+    //     $pdf->Cell(69,5,number_format($result->total_palawan,2),1,0,'R');
 
-    $pdf->SetFont('Arial','B',10);
-    $pdf->Ln('8');
+    //     $pdf->Ln('5');
+    //     $pdf->setx('15');
+    //     $pdf->Cell(50,5,"Total Remittance w/ Palawan   ",1,0,'C');
+    //     $pdf->Cell(60,5,"",1,0,'C');
+    //     $pdf->Cell(69,5,number_format($result->total_collection + @$result->total_palawan,2),1,0,'R');
+    // }
+
+    
+
+    if (!empty($result2) || !empty($result3)) {
+        
+        
+        $totalWidth = 190;
+        $leftMargin = 10;
+
+        // Calculate the width for the first column (equivalent to 2 columns)
+        $firstColumnWidth = (($totalWidth - $leftMargin) / 6) * 2;
+
+        // Calculate the width for the remaining columns (equally divided among 4 columns)
+        $columnWidth = (($totalWidth - $leftMargin) - $firstColumnWidth) / 5;
+        
+        if ($result->bu == 'OPLAN' || $result->bu == 'MAS-LDI' || $result->bu == 'MAS-NETMAN' || $result->bu == 'MAS-MPDI' ) {
+            $pdf->Cell(190, 10, "PDC/DC BREAKDOWN", 0, 1, 'C');
+            $pdf->SetX(15);
+            // Output table headers for $result3
+            $pdf->Cell($firstColumnWidth, 7, 'Name', 1, 0, 'C', true);
+            $pdf->Cell($columnWidth, 7, 'Due Date', 1, 0, 'C', true);
+            $pdf->Cell($columnWidth, 7, 'Bank', 1, 0, 'C', true);
+            $pdf->Cell($columnWidth, 7, 'Check No.', 1, 0, 'C', true);
+            $pdf->Cell($columnWidth, 7, 'Status', 1, 0, 'C', true);
+            $pdf->Cell($columnWidth, 7, 'Amount', 1, 1, 'C', true); // Move to the next line
+        
+            // Check if $result3 is not empty and output rows
+            if (!empty($result3)) {
+                foreach ($result3 as $row) {
+                    $pdf->SetX(15); 
+                    $pdf->SetFont('Arial', '', 6);
+                    $pdf->Cell($firstColumnWidth, 7, utf8_decode($row->name), 1, 0, 'C');
+                    $pdf->SetFont('Arial', '', 8);
+                    $pdf->Cell($columnWidth, 7, $row->due_date, 1, 0, 'C');
+                    $pdf->Cell($columnWidth, 7, $row->check_bank, 1, 0, 'C');
+                    $pdf->Cell($columnWidth, 7, $row->check_no, 1, 0, 'C');
+                    $pdf->Cell($columnWidth, 7, $row->status2, 1, 0, 'C');
+                    $pdf->Cell($columnWidth, 7, number_format($row->total, 2), 1, 1, 'C'); // Move to the next line after each row
+                }
+            } else {
+                // Show 'No data available' message if $result3 is empty
+                $pdf->SetX(15); 
+                $pdf->SetFont('Arial', '', 8);
+                $pdf->Cell(180, 7, 'No data available', 1, 0, 'C');
+            }
+        }else{
+            $pdf->Cell(190, 10, "PDC/DC BREAKDOWN", 0, 1, 'C');
+            $pdf->SetX(15);
+            
+            $pdf->Cell($firstColumnWidth, 7, 'Name', 1, 0, 'C', true);
+            $pdf->Cell($columnWidth, 7, 'Due Date', 1, 0, 'C', true);
+            $pdf->Cell($columnWidth, 7, 'Bank', 1, 0, 'C', true);
+            $pdf->Cell($columnWidth, 7, 'Check No.', 1, 0, 'C', true);
+            $pdf->Cell($columnWidth, 7, 'Status', 1, 0, 'C', true);
+            $pdf->Cell($columnWidth, 7, 'Amount', 1, 1, 'C', true); // Move to the next line
+
+            
+            foreach ($result2 as $row) {
+                $pdf->SetX(15); 
+                $pdf->SetFont('Arial', '', 6);
+                $pdf->Cell($firstColumnWidth, 7, $row->name, 1, 0, 'C');
+                $pdf->SetFont('Arial', '', 8);
+                $pdf->Cell($columnWidth, 7, $row->due_date, 1, 0, 'C');
+                $pdf->Cell($columnWidth, 7, $row->bank, 1, 0, 'C');
+                $pdf->Cell($columnWidth, 7, $row->check_no, 1, 0, 'C');
+                $pdf->Cell($columnWidth, 7, '', 1, 0, 'C');
+                $pdf->Cell($columnWidth, 7, number_format($row->amount, 2), 1, 1, 'C'); // Move to the next line after each row
+            }
+            
+            
+        }
+
+        
+        
+    }
+    
+
+    
+
+
+
+    $pdf->SetFont('Arial','B',8);
+    $pdf->Ln('5');
     $pdf->Cell(60,5,"Remitted by:",0,1,'C');
     $pdf->Cell(180,-5,"Checked by:",0,1,'C');
     $pdf->Cell(290,5,"Received by:",0,1,'C');
-
-    $pdf->SetFont('Arial','U',10);
-    $pdf->Ln('6');
+    $pdf->Ln('-2');
+    $pdf->SetFont('Arial','U',8);
+    $pdf->Ln('5');
     $pdf->setx('29');
-    $pdf->Cell(60,5,$result->full_name."          ",0,1,'L');
+    $pdf->Cell(60,5,utf8_decode($result->full_name)."          ",0,1,'L');
     $pdf->setx('89');
-    $pdf->Cell(180,-5,$this->session->userdata('full_name')."          ",0,1,'L');
+    $pdf->Cell(180,-5,"                                     ",0,1,'L');
     $pdf->setx('144');
     $pdf->Cell(290,5,"                                     ",0,1,'L');
 

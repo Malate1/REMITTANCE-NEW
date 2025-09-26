@@ -14,7 +14,7 @@
 	                "order":[],  
 	                "columnDefs":[  
 	                    {  
-	                         "targets":[0, 2, 3, 4, 5],    // for col defs
+	                         "targets":[0, 2, 3, 4, 5],  
 	                         "orderable":false,  
 	                    },  
 	                ],  

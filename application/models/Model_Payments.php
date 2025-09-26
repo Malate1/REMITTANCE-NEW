@@ -54,7 +54,13 @@
 
         public function getPayment($id)
         {
-            $query = $this->db->query('SELECT a.*,b.name FROM payments a INNER JOIN customer b ON a.cus_code=b.code WHERE a.payment_id='.$id);
+           $query = $this->db->query('SELECT a.*,b.name,c.name AS bname FROM payments_ldi a INNER JOIN customer2 b ON a.cus_code=b.code INNER JOIN bank c ON a.check_bank=c.code2 WHERE a.pay_id='.$id);
+            return $query->row();
+        }
+
+        public function getPayment3($id)
+        {
+           $query = $this->db->query('SELECT a.*,b.name,c.name AS bname FROM payments_xtruck a LEFT JOIN customer2 b ON a.cus_code=b.code INNER JOIN bank c ON a.check_bank=c.code2 WHERE a.pay_id='.$id);
             return $query->row();
         }
 
@@ -84,28 +90,34 @@
             $this->db->update('payments', $data);
         }
 
-        public function edit_sm_payment($collection, $remittance, $dc_pc, $pdc_pc, $dc_amt, $pdc_amt,$denomid)
-        {
-            $data = array(
+        // public function edit_sm_payment($collection, $remittance, $dc_pc, $pdc_pc, $dc_amt, $pdc_amt,$denomid)
+        // {
+        //     $data = array(
                 
-                'total_dc' => $this->security->xss_clean(str_replace(",","",$dc_amt)),
-                'total_pdc' => $this->security->xss_clean(str_replace(",","",$pdc_amt)),               
-                'update_time' => date("h:i A"),
-                'dc_pcs' => $this->security->xss_clean($dc_pc),
-                'pdc_pcs' => $this->security->xss_clean($pdc_pc),
-                'total_collection' => $this->security->xss_clean(str_replace(",","",$remittance)),
-                'total_remittance' => $this->security->xss_clean(str_replace(",","",$collection))
+        //         'total_dc' => $this->security->xss_clean(str_replace(",","",$dc_amt)),
+        //         'total_pdc' => $this->security->xss_clean(str_replace(",","",$pdc_amt)),               
+        //         'update_time' => date("h:i A"),
+        //         'dc_pcs' => $this->security->xss_clean($dc_pc),
+        //         'pdc_pcs' => $this->security->xss_clean($pdc_pc),
+        //         'total_collection' => $this->security->xss_clean(str_replace(",","",$remittance)),
+        //         'total_remittance' => $this->security->xss_clean(str_replace(",","",$collection))
                 
-            );
+        //     );
 
-            $this->db->where('denom_id', $denomid);
-            $this->db->update('denomination', $data);
-        }
+        //     $this->db->where('denom_id', $denomid);
+        //     $this->db->update('denomination', $data);
+        // }
 
         public function delete_payment($id)
         {
             $this->db->where('payment_id', $id);
             $this->db->delete('payments');
+        }
+
+        public function delete_payment_ldi($id)
+        {
+            $this->db->where('pay_id', $id);
+            $this->db->delete('payments_ldi');
         }
 
         public function selectCheck()

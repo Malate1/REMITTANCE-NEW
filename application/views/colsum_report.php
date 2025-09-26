@@ -16,9 +16,17 @@
     $pdf->SetFont('Arial','B',12);
     $pdf->Cell(250,-5,strtoupper($result3->bu_desc),0,1,'C');
     $pdf->Cell(250,15,"COLLECTION SUMMARY REPORT",0,1,'C');
-    $pdf->Cell(250,-4,"DATE: ".date("F d, Y",strtotime($result)),0,1,'C');
-
-    $pdf->Ln('8');
+    $pdf->Cell(250, -2, "DATE: " . date("F d, Y", strtotime($datefrom)) . " - " . date("F d, Y", strtotime($dateto)), 0, 1, 'C');
+    if($sm != 'All') {
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(52, 15, "Salesman:", 0, 0, 'C');
+        $pdf->Cell(40, 15, strtoupper(@$full_name->full_name), 0, 1, 'L');
+    } else {
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(52, 15, "", 0, 0, 'C');
+        $pdf->Cell(40, 15, "", 0, 1, 'L');
+    }
+    $pdf->Ln(-2);
     $pdf->SetFillColor(220,220,220);
     $pdf->SetTextColor(0);
     $pdf->SetDrawColor(0,0,0);
@@ -26,52 +34,85 @@
     $pdf->SetFont('','B');
 
     $pdf->SetFont('Arial','B',10);
-    $pdf->setx('25');
-    $pdf->Cell(45,14,'Salesman',1,0,'C',true);
-    $pdf->Cell(18,14,'SRR No.',1,0,'C',true);
-    $pdf->Cell(99,7,'Remittance Breakdown',1,0,'C',true);
-    $pdf->Ln('7');
-    
-    $pdf->setx('88');
-    $pdf->Cell(24,7,'Cash',1,0,'C',true);
-    $pdf->Cell(24,7,'PDC',1,0,'C',true);
-    $pdf->Cell(24,7,'DC',1,0,'C',true);
-    $pdf->Cell(27,7,'Total',1,0,'C',true);
-    $pdf->Ln('-7');
-    $pdf->setx('187');
-    $pdf->Cell(35,14,'Collection Amount',1,0,'C',true);
-    $pdf->Cell(30,14,'Short(-)/Over(+)',1,0,'C',true);
+    $pdf->SetX(20); // Adjust starting point for table
+    if ($sm != 'All') {
+        $pdf->Cell(32,14,'Date',1,0,'C',true);
+    } else {
+        $pdf->Cell(32,14,'Salesman',1,0,'C',true);
+    }
+
+    $pdf->Cell(28,14,'SRR No.',1,0,'C',true);
+    $pdf->Cell(90,7,'Remittance Breakdown',1,0,'C',true); // Reduced width
+    $pdf->Ln(7);
+
+    $pdf->SetX(80); // Adjusted position for sub-headers
+    $pdf->Cell(22,7,'Cash',1,0,'C',true); // Reduced width
+    $pdf->Cell(22,7,'PDC',1,0,'C',true); // Reduced width
+    $pdf->Cell(22,7,'DC',1,0,'C',true); // Reduced width
+    $pdf->Cell(24,7,'Remittance',1,0,'C',true); // Reduced width
+    $pdf->Ln(-7);
+    $pdf->SetX(170); // Adjusted position for next columns
+    $pdf->Cell(26,14,'Accountability',1,0,'C',true);
+    $pdf->Cell(20,14,'Variance',1,0,'C',true);
+    $pdf->Cell(50,14,'Remarks',1,0,'C',true); // Increased width for "Remarks"
 
     $pdf->SetFillColor(255,255,255);
     $pdf->SetTextColor(0);
     $pdf->SetFont('Arial','',10);
 
+
     $flag = 0;
+    $overall_total = 0.00;
     foreach($result1 as $row) {
-        if($flag==0){
-            $pdf->Ln('14');
+        
+        if($flag == 0) {
+            $pdf->Ln(14);
             $flag = 1;
-        }else{
-            $pdf->Ln('8');
+        } else {
+            $pdf->Ln(8);
         }
-        if($row->remarks==""){
-            $sm = $row->full_name;
-        }else{
+
+        // Process the salesman name with remarks if available
+        if($row->remarks == "") {
+            $sm_name = $row->last_name;
+        } else {
             $rem = explode(" ", $row->remarks);
-            $sm = $row->full_name.'/'.$rem[0];
+            $sm_name = $row->last_name;
         }
-        $pdf->setx('25');
-        $pdf->SetFont('Arial','',9);
-        $pdf->Cell(45,8,$sm,1,0,'L',true);
-        $pdf->SetFont('Arial','',10);
-        $pdf->Cell(18,8,$row->denom_id,1,0,'C',true);
-        $pdf->Cell(24,8,number_format($row->total_cash,2),1,0,'R',true);
-        $pdf->Cell(24,8,number_format($row->total_pdc,2),1,0,'R',true);
-        $pdf->Cell(24,8,number_format($row->total_dc,2),1,0,'R',true);
-        $pdf->Cell(27,8,number_format($row->total_collection,2),1,0,'R',true);
-        $pdf->Cell(35,8,number_format($row->total_remittance,2),1,0,'R',true);
-        $pdf->Cell(30,8,number_format($row->total_collection-$row->total_remittance,2),1,0,'R',true);
+
+        // Calculate totals
+        $total = $row->total_collection + $row->sm_inc;
+        $overall_total += $row->total_remittance + $row->total_palawan;
+
+        // Set X position for content alignment
+        $pdf->SetX(20);
+        $pdf->SetFont('Arial', '', 8);
+
+        // Display Date or Salesman Name based on condition
+        if ($sm != 'All') {
+            $pdf->Cell(32, 8, date("F d, Y", strtotime($row->date_added)), 1, 0, 'L', true);
+        } else {
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->Cell(32, 8, $sm_name, 1, 0, 'L', true);
+        }
+
+        // Content cells aligned with header columns
+        $pdf->Cell(28, 8, @$row->manualsrr, 1, 0, 'C', true);                          // SRR No.
+        $pdf->Cell(22, 8, number_format($row->total_cash, 2), 1, 0, 'R', true);      // Cash
+        $pdf->Cell(22, 8, number_format($row->total_pdc, 2), 1, 0, 'R', true);       // PDC
+        $pdf->Cell(22, 8, number_format($row->total_dc, 2), 1, 0, 'R', true);        // DC
+        $pdf->Cell(24, 8, number_format($row->total_collection + $row->total_palawan, 2), 1, 0, 'R', true); // Total
+        $pdf->Cell(26, 8, number_format($row->total_remittance + $row->total_palawan, 2), 1, 0, 'R', true); // Collection Amount
+        $pdf->Cell(20, 8, number_format($total - $row->total_remittance , 2), 1, 0, 'R', true); // Short(-)/Over(+)
+        $pdf->Cell(50, 8, $row->remarks, 1, 0, 'L', true); // Remarks column
+
     }
+
+    // Grand Total Row
+    $pdf->Ln(7);
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->Cell(240, 15, "Grand Total: " . number_format($overall_total, 2), 0, 0, 'R');
+
 
     // $pdf->SetFont('Arial','B',10);
     // $pdf->Ln('10');
@@ -107,91 +148,3 @@
 
     $pdf->Output();
 ?>
-<!--
-<br/>
-<main>
-<div class="container-fluid">
-    <center><h6><?php echo strtoupper($result3->bu_desc); ?></h6></center>
-    <center><h6>GROCERY DAILY SUMMARY COLLECTION REPORT</h6></center>
-    <center><h6>DATE: <?php echo date("F d, Y",strtotime($result)); ?></h6></center><br/>
-    <table class="table table-bordered compact" style="border-color: #000000">
-        <thead>
-            <tr>
-                <th rowspan="2" style="vertical-align:middle"><center>Salesman</center></th>
-                <th rowspan="2" style="vertical-align:middle"><center>SRR No.</center></th>
-                <th colspan="6"><center>Cash Breakdown</center></th>
-                <th rowspan="2" style="vertical-align:middle"><center>Total Bills</center></th>
-                <th rowspan="2" style="vertical-align:middle" ><center>Post Dated Checks</center></th>
-                <th rowspan="2" style="vertical-align:middle"><center>Dated Checks</center></th>
-                <th rowspan="2" style="vertical-align:middle"><center>Coins</center></th>
-                <th rowspan="2" style="vertical-align:middle"><center>Grand Total</center></th>
-            </tr>
-            <tr>
-                <th><center>1000</center></th>
-                <th><center>500</center></th>
-                <th><center>200</center></th>
-                <th><center>100</center></th>
-                <th><center>50</center></th>
-                <th><center>20</center></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($result1 as $row) { ?>
-                <tr>
-                    <td><?php echo $row->full_name; ?></td>
-                    <td><center><?php echo $row->denom_id; ?></center></td>
-                    <td><center><?php echo $row->qty_1000; ?></center></td>
-                    <td><center><?php echo $row->qty_500; ?></center></td>
-                    <td><center><?php echo $row->qty_200; ?></center></td>
-                    <td><center><?php echo $row->qty_100; ?></center></td>
-                    <td><center><?php echo $row->qty_50; ?></center></td>
-                    <td><center><?php echo $row->qty_20; ?></center></td>
-                    <td style="text-align:right"><?php echo number_format($row->total_bill,2); ?></td>
-                    <td style="text-align:right"><?php echo number_format($row->total_pdc,2); ?></td>
-                    <td style="text-align:right"><?php echo number_format($row->total_dc,2); ?></td>
-                    <td style="text-align:right"><?php echo number_format($row->total_coins,2); ?></td>
-                    <td style="text-align:right"><?php echo number_format($row->total_collection,2); ?></td>
-                </tr>
-            <?php } ?>
-                <tr style="font-weight:bold">
-                    <td style="text-align:right">Total >>></td>
-                    <td></td>
-                    <td><center><?php echo $result2->qty_1000; ?></center></td>
-                    <td><center><?php echo $result2->qty_500; ?></center></td>
-                    <td><center><?php echo $result2->qty_200; ?></center></td>
-                    <td><center><?php echo $result2->qty_100; ?></center></td>
-                    <td><center><?php echo $result2->qty_50; ?></center></td>
-                    <td><center><?php echo $result2->qty_20; ?></center></td>
-                    <td style="text-align:right"><?php echo number_format($result2->total_bill,2); ?></td>
-                    <td style="text-align:right"><?php echo number_format($result2->total_pdc,2); ?></td>
-                    <td style="text-align:right"><?php echo number_format($result2->total_dc,2); ?></td>
-                    <td style="text-align:right"><?php echo number_format($result2->total_coins,2); ?></td>
-                    <td style="text-align:right"><?php echo number_format($result2->total_collection,2); ?></td>
-                </tr>
-        </tbody>
-    </table>
-</div>
-<div class="container-fluid">
-    <div class="row" style="margin-left:60px">
-        <div class="col-md-4">
-            <label style="font-weight:bold">Prepared by:</label><br/><br/>
-            <label style="font-size:17px;text-decoration:underline">_____<?php echo $result3->signature; ?>_____</label></br>
-            <label style="font-size:13px;margin-top:-12px">Printed name & Signature</label><br/>
-            <label style="font-size:13px;margin-top:-12px">WDG - REMITTANCE SECTION</label>
-        </div>  
-        <div class="col-md-4">
-            <label style="font-weight:bold">Noted by:</label><br/><br/>
-            <label style="font-size:17px">______________________________</label><br/>
-            <label style="font-size:13px;margin-top:-12px">Sr. Sales Supervisor</label><br/>
-            <label style="font-size:13px;margin-top:-12px">WHOLESALE DISTRIBUTION GROUP</label>
-        </div>
-        <div class="col-md-4">
-            <label style="font-weight:bold">Received by:</label><br/><br/>
-            <label style="font-size:17px;">______________________________</label><br/>
-            <label style="font-size:13px;margin-top:-12px">Printed name & Signature</label><br/>
-            <label style="font-size:13px;margin-top:-12px">CORPORATE TREASURY</label>
-        </div>
-    </div>
-    <button class="btn btn-primary no-print" style="float: right" id="printbutton" onclick="window.print()"><i class="fas fa-print"></i>&nbsp;&nbsp;Print Report</button><br/><br/>
-</div>
-</main> -->

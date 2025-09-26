@@ -68,6 +68,11 @@ var $creator;            // creator
 var $AliasNbPages;       // alias for total number of pages
 var $PDFVersion;         // PDF version number
 
+// public $title;
+    // public $result;
+    // public $result3;
+    // public $location;
+
 /*******************************************************************************
 *                                                                              *
 *                               Public methods                                 *
@@ -376,12 +381,47 @@ function AddPage($orientation='', $size='')
 
 function Header()
 {
-	// To be implemented in your own inherited class
+    // Set up title & date (adjust margins if needed)
+    // $this->SetFont('Arial','B',12);
+    // $this->SetX(20);
+    // $this->Cell(0,5, $_SESSION['location'] . " - " . $this->title . ' Report', 0, 1, 'L'); // Use dynamic property
+    // $this->SetX(20);
+    // $this->Cell(0,8, date('F d, Y', strtotime($this->dateFrom)) . " - " . date('F d, Y', strtotime($this->dateTo)), 0, 1, 'L');
+
+    // // Line break
+    // // $this->Ln(1);
+
+    // // Set table header
+    // $this->SetFillColor(220,220,220);
+    // $this->SetTextColor(0);
+    // $this->SetDrawColor(0,0,0);
+    // $this->SetLineWidth(.3);
+    // $this->SetFont('Arial','B',10);
+
+    // $this->SetX(20);
+    // $this->Cell(25,7,'Collect Date',1,0,'C',true);
+    // $this->Cell(25,7,'Check Date',1,0,'C',true);
+    // $this->Cell(20,7,'No. of Days',1,0,'C',true);
+    // $this->Cell(11,7,'Type',1,0,'C',true);
+    // $this->Cell(40,7,'Salesman',1,0,'C',true);
+    // $this->Cell(30,7,'Account No.',1,0,'C',true);
+    // $this->Cell(53,7,'Account Name',1,0,'C',true);
+    // $this->Cell(53,7,'Customer Name',1,0,'C',true);
+    // $this->Cell(17,7,'Bank',1,0,'C',true);
+    // $this->Cell(22,7,'Check No.',1,0,'C',true);
+    // $this->Cell(25,7,'Amount',1,1,'C',true);
 }
+
 
 function Footer()
 {
-	// To be implemented in your own inherited class
+	$this->SetY(-15);
+        // Set font
+        $this->SetFont('Arial','I',8);
+        // Date/Time
+        $runtime = date('F j, Y h:i A');
+        // Page number and runtime
+        $this->Cell(0,10,'Page '.$this->PageNo().' | Generated: '.$runtime, 0, 0, 'C');
 }
 
 function PageNo()

@@ -15,13 +15,65 @@
             $this->load->view('header');
             if($this->session->userdata('type')=="Cashier")
             {
-                $this->load->view('dashboard-cashier');
+                // Date and BU filters from GET (for top_salesmen chart)
+                $start_date = $this->input->get('start_date') ?: date('Y-m-01');
+                $end_date   = $this->input->get('end_date') ?: date('Y-m-t');
+                $bu         = $this->input->get('bu');
+
+                // Count today's remittances
+                $this->db->from('denomination a');
+                $this->db->join('users b', 'a.user_id = b.user_id');
+                $this->db->where('a.date_added', date('Y-m-d'));
+                $this->db->where('b.location', $this->session->userdata('location'));
+                $count_today = $this->db->count_all_results();
+
+                // Count all denominations per location
+                $this->db->from('denomination a');
+                $this->db->join('users b', 'a.user_id = b.user_id');
+                $this->db->where('b.location', $this->session->userdata('location'));
+                $total_denom = $this->db->count_all_results();
+
+                // Top Salesmen Chart Data
+                $salesmen_data = $this->Crud_Model->get_top_salesmen_by_remittance($start_date, $end_date, $bu);
+                $bu_list = $this->Crud_Model->get_all_bu();
+
+                $data = [
+                    'remittance_count' => $count_today,
+                    'total_denom_count' => $total_denom,
+                    'location' => $this->session->userdata('bu'),
+
+                    // For chart
+                    'start_date' => $start_date,
+                    'end_date' => $end_date,
+                    'selected_bu' => $bu,
+                    'salesmen' => $salesmen_data,
+                    'bu_list' => $bu_list
+                ];
+
+                $this->load->view('dashboard-cashier', $data);
             }
             elseif($this->session->userdata('type')=="Salesman")
             {
-                $this->load->view('dashboard-salesman');
+                $this->load->view('dashboard-salesman');  
             }
             $this->load->view('footer');
+        }
+
+        public function top_salesmen() {
+            
+            // Get filters from GET (URL or form)
+            $start_date = $this->input->get('start_date') ?: date('Y-m-01');
+            $end_date = $this->input->get('end_date') ?: date('Y-m-t');
+            $bu = $this->input->get('bu'); // Business Unit (optional)
+    
+            $data['start_date'] = $start_date;
+            $data['end_date'] = $end_date;
+            $data['selected_bu'] = $bu;
+    
+            $data['salesmen'] = $this->Crud_Model->get_top_salesmen_by_remittance($start_date, $end_date, $bu);
+            $data['bu_list'] = $this->Crud_Model->get_all_bu(); // For dropdown
+    
+            $this->load->view('dashboard-cashier',$data);
         }
 
         public function logout()
@@ -117,6 +169,14 @@
             $this->Crud_Model->resetData($this->input->post('ids'));
             // redirect('user');
         }
+
+        public function logs()
+        {
+            $data['result'] = $this->Crud_Model->getLogs();
+            $this->load->view('header');
+            $this->load->view('key_logs',$data);
+            $this->load->view('footer');
+        }
         
         public function user()
         {
@@ -148,17 +208,35 @@
                         <div class="form-group">
                             <label for="bu">Location</label>
                             <select class="form-control" name="bu" id="bu" required>
-                                <option value="WDG">WDG</option>
-                                <option value="UWDG">UWDG</option>
-                                <option value="WDG-CDC">WDG-CDC</option>
+                                
+                                <option value="LDI">LDI-HO</option>
+                               
+                                <option value="LDI-CDC">LDI-CDC</option>
+                                <option value="LDI-UDC">LDI-UDC</option>
+                                <option value="LDI-Parallel">LDI-Parallel</option>
+                                
+
+                                
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="loc">Business Unit</label>
                             <select class="form-control" name="loc" id="loc" required>
-                               
-                                <option value="WDG">WDG</option>
+                                <option value="OPLAN">OPLAN</option>
+                                <option value="HORECA">HORECA</option>
+                                <option value="FROZEN">FROZEN</option>
+                                <option value="3PS">3PS</option>
+                                <option value="CVS">CVS</option>
+                                <option value="MPDI">MPDI</option>
+                                <option value="XTRUCK">XTRUCK-LDI</option>
+                                <option value="XTRUCK-NETMAN">XTRUCK-NETMAN</option>
+                                <option value="XTRUCK-MPDI">XTRUCK-MPDI</option> 
+                                <option value="UNILAB">UNILAB</option>
+                                <option value="MAS-LDI">MAS-LDI</option>
+                                <option value="MAS-NETMAN">MAS-NETMAN</option>
+                                <option value="MAS-MPDI">MAS-MPDI</option>
+                                
                             </select>
                         </div>
                         <div class="form-group">
@@ -214,34 +292,27 @@
                         <div class="form-group">
                             <label for="bu">Location</label>
                             <select class="form-control" name="bu" id="bu" required>';
-                                if($bu == 'WDG'){$bu3 = 'selected';}else{$bu3 = '';}
-                                if($bu == 'UWDG'){$bu1 = 'selected';}else{$bu1 = '';}
-                                // if($bu == 'LDI'){$bu2 = 'selected';}else{$bu2 = '';}
-                                
-
-                                // if($bu == 'LDI-CDC'){$bu6 = 'selected';}else{$bu6 = '';}
-
-                                // if($bu == 'LDI-XTRUCK'){$bu5 = 'selected';}else{$bu5 = '';}
-                                // if($bu == 'LDI-FROZEN'){$bu7 = 'selected';}else{$bu7 = '';}
-                                // if($bu == 'LDI-MPDI'){$bu8 = 'selected';}else{$bu8 = '';}
-                                // if($bu == 'LDI-CVS'){$bu9 = 'selected';}else{$bu9 = '';}
-                                // if($bu == 'LDI-3PS'){$bu10 = 'selected';}else{$bu10 = '';}
-
-                                // <option value="LDI-XTRUCK" '.$bu5.'>LDI-XTRUCK</option>
-                                // <option value="LDI-FROZEN" '.$bu7.'>LDI-FROZEN</option>
-                                // <option value="LDI-MPDI" '.$bu8.'>LDI-MPDI</option>
-                                // <option value="LDI-CVS" '.$bu9.'>LDI-CVS</option>
-                                // <option value="LDI-3PS" '.$bu10.'>LDI-3PS</option>
-
-                                // <option value="LDI" '.$bu2.'>LDI-HO</option><option value="LDI-CDC" '.$bu6.'>LDI-CDC</option>
-
-                                if($bu == 'WDG-CDC'){$bu4 = 'selected';}else{$bu4 = '';}
-            echo                '<option value="WDG" '.$bu3.'>WDG</option>
-                                <option value="UWDG" '.$bu1.'>UWDG</option>
                                 
                                 
+                                $bu2 = ($bu == 'LDI') ? 'selected' : '';
+                                $bu3 = ($bu == 'LDI-CDC') ? 'selected' : '';
+                                $bu4 = ($bu == 'LDI-UDC') ? 'selected' : '';
+                                $bu5 = ($bu == 'LDI-BB') ? 'selected' : '';
+                                $bu6 = ($bu == 'LDI-Parallel') ? 'selected' : '';
 
-                                <option value="WDG-CDC" '.$bu4.'>WDG-CDC</option>
+
+            echo                '
+                                <option value="LDI" '.$bu2.'>LDI-HO</option>
+                                
+
+                                <option value="LDI-CDC" '.$bu3.'>LDI-CDC</option>
+
+                                <option value="LDI-UDC" '.$bu4.'>LDI-UDC</option>
+                                <option value="LDI-BB" '.$bu5.'>LDI-BB</option>
+                                <option value="LDI-Parallel" '.$bu6.'>LDI-Parallel</option>
+                                
+
+                                
 
                             </select>
                         </div>
@@ -249,17 +320,35 @@
                         <div class="form-group">
                             <label for="loc">Business Unit</label>
                             <select class="form-control" name="loc" id="loc" required>';
-                                // if($loc == 'OPLAN'){$oplan = 'selected';}else{$oplan = '';}
-                                // if($loc == 'HORECA'){$horeca = 'selected';}else{$horeca = '';}
-                                // if($loc == 'FROZEN'){$frozen = 'selected';}else{$frozen = '';}
-                                // if($loc == '3PS'){$ps = 'selected';}else{$ps = '';}
-                                // if($loc == 'MPDI'){$mpdi = 'selected';}else{$mpdi = '';}
-                                // if($loc == 'CVS'){$cvs = 'selected';}else{$cvs = '';}
-                                // if($loc == 'XTRUCK'){$xtruck = 'selected';}else{$xtruck = '';}
-                                if($loc == 'WDG'){$wdg = 'selected';}else{$wdg = '';}
+                                if($loc == 'OPLAN'){$oplan = 'selected';}else{$oplan = '';}
+                                if($loc == 'HORECA'){$horeca = 'selected';}else{$horeca = '';}
+                                if($loc == 'FROZEN'){$frozen = 'selected';}else{$frozen = '';}
+                                if($loc == '3PS'){$ps = 'selected';}else{$ps = '';}
+                                if($loc == 'MPDI'){$mpdi = 'selected';}else{$mpdi = '';}
+                                if($loc == 'CVS'){$cvs = 'selected';}else{$cvs = '';}
+                                if($loc == 'XTRUCK'){$xtruck = 'selected';}else{$xtruck = '';}
+                                if($loc == 'XTRUCK-NETMAN'){$xtruck_net = 'selected';}else{$xtruck_net = '';}
+                                if($loc == 'XTRUCK-MPDI'){$xtruck_mpdi = 'selected';}else{$xtruck_mpdi = '';}
+                                if($loc == 'UNILAB'){$unilab = 'selected';}else{$unilab = '';}
+                                if($loc == 'MAS-LDI'){$mas = 'selected';}else{$mas = '';}
+                                if($loc == 'MAS-NETMAN'){$mas_net = 'selected';}else{$mas_net = '';}
+                                if($loc == 'MAS-MPDI'){$mas_mpdi = 'selected';}else{$mas_mpdi = '';}
+                                //if($loc == 'WDG'){$wdg = 'selected';}else{$wdg = '';}  <option value="WDG" '.$wdg.'>WDG</option>
 
-            echo                '
-                                <option value="WDG" '.$wdg.'>WDG</option>
+            echo                '<option value="HORECA" '.$horeca.'>HORECA</option>
+                                <option value="3PS" '.$ps.'>3PS</option>
+                                <option value="MPDI" '.$mpdi.'>MPDI</option>
+                                <option value="CVS" '.$cvs.'>CVS</option>
+                                <option value="FROZEN" '.$frozen.'>FROZEN</option>
+                                <option value="OPLAN" '.$oplan.'>OPLAN</option>
+                                <option value="XTRUCK" '.$xtruck.'>XTRUCK-LDI</option>
+                                <option value="XTRUCK-NETMAN" '.$xtruck_net.'>XTRUCK-NETMAN</option>
+                                <option value="XTRUCK-MPDI" '.$xtruck_mpdi.'>XTRUCK-MPDI</option>
+                                <option value="UNILAB" '.$unilab.'>UNILAB</option>
+                                <option value="MAS-LDI" '.$mas.'>MAS-LDI</option>
+                                <option value="MAS-NETMAN" '.$mas_net.'>MAS-NETMAN</option>
+                                <option value="MAS-MPDI" '.$mas_mpdi.'>MAS-MPDI</option>
+                               
                             </select>
                         </div>
                         <div class="form-group">
@@ -320,18 +409,25 @@
             $row = $this->Crud_Model->getData($_POST['ids']);
             $bu = $row->location;
 
-            if($bu == 'WDG'){$bu3 = 'selected';}else{$bu3 = '';}
-            if($bu == 'UWDG'){$bu1 = 'selected';}else{$bu1 = '';}
-            if($bu == 'WDG-CDC'){$bu4 = 'selected';}else{$bu4 = '';}
             
+            $bu2 = ($bu == 'LDI') ? 'selected' : '';
+            $bu3 = ($bu == 'LDI-CDC') ? 'selected' : '';
+            $bu4 = ($bu == 'LDI-UDC') ? 'selected' : '';
+            $bu5 = ($bu == 'LDI-BB') ? 'selected' : '';
+            $bu6 = ($bu == 'LDI-Parallel') ? 'selected' : '';
+
             echo '<h5>Current Location: '.$bu.'</h5><br/>';
             echo '<input type="hidden" class="form-control" name="id" id="id" autocomplete="off" value="'.$row->user_id.'" required>
                 <div class="form-group">
                     <label for="type">Location</label>
                     <select class="form-control" name="bu" id="bu" required>
-                        <option value="WDG" '.$bu3.'>WDG</option>
-                        <option value="UWDG" '.$bu1.'>UWDG</option>
-                        <option value="WDG-CDC" '.$bu4.'>WDG-CDC</option>
+
+                        <option value="LDI" '.$bu2.'>LDI-HO</option>
+                        <option value="LDI-CDC" '.$bu3.'>LDI-CDC</option>
+                        <option value="LDI-UDC" '.$bu4.'>LDI-UDC</option>
+                        <option value="LDI-BB" '.$bu5.'>LDI-BB</option>
+                        <option value="LDI-Parallel" '.$bu6.'>LDI-Parallel</option>
+                        
                     </select>
                  </div>
                  <button style="float: right" class="btn btn-secondary" data-dismiss="modal"> Close </button>
@@ -343,16 +439,40 @@
             $row = $this->Crud_Model->getData($_POST['ids']);
             $bu_loc = $row->bu;
 
-            if($bu_loc == 'WDG'){$bu_loc1 = 'selected';}else{$bu_loc1 = '';}
-            
+           // if($bu_loc == 'WDG'){$bu_loc1 = 'selected';}else{$bu_loc1 = '';}  <option value="WDG" '.$bu_loc1.'>WDG</option>
+            if($bu_loc == 'OPLAN'){$bu_loc2 = 'selected';}else{$bu_loc2 = '';}
+            if($bu_loc == 'HORECA'){$bu_loc3 = 'selected';}else{$bu_loc3 = '';}
+            if($bu_loc == 'FROZEN'){$bu_loc4 = 'selected';}else{$bu_loc4 = '';}
+            if($bu_loc == 'MPDI'){$bu_loc5 = 'selected';}else{$bu_loc5 = '';}
+            if($bu_loc == 'CVS'){$bu_loc6 = 'selected';}else{$bu_loc6 = '';}
+            if($bu_loc == '3PS'){$bu_loc7 = 'selected';}else{$bu_loc7 = '';} 
+            if($bu_loc == 'XTRUCK'){$bu_loc8 = 'selected';}else{$bu_loc8 = '';}
+            if($bu_loc == 'XTRUCK-NETMAN'){$bu_loc9 = 'selected';}else{$bu_loc9 = '';}
+            if($bu_loc == 'XTRUCK-MPDI'){$bu_loc10 = 'selected';}else{$bu_loc10 = '';}
+            if($bu_loc == 'UNILAB'){$bu_loc11 = 'selected';}else{$bu_loc11 = '';}
+            if($bu_loc == 'MAS-LDI'){$bu_loc12 = 'selected';}else{$bu_loc12 = '';}
+            if($bu_loc == 'MAS-NETMAN'){$bu_loc13 = 'selected';}else{$bu_loc13 = '';}
+            if($bu_loc == 'MAS-MPDI'){$bu_loc14 = 'selected';}else{$bu_loc14 = '';}
            
             echo '<h5>Current BU: '.$bu_loc.'</h5><br/>';
             echo '<input type="hidden" class="form-control" name="id" id="id" autocomplete="off" value="'.$row->user_id.'" required>
                 <div class="form-group">
                     <label for="type">BU</label>
                     <select class="form-control" name="loc" id="loc" required>
-                        <option value="WDG" '.$bu_loc1.'>WDG</option>
                        
+                        <option value="OPLAN" '.$bu_loc2.'>OPLAN</option>
+                        <option value="HORECA" '.$bu_loc3.'>HORECA</option>
+                        <option value="FROZEN" '.$bu_loc4.'>FROZEN</option>
+                        <option value="MPDI" '.$bu_loc5.'>MPDI</option>
+                        <option value="CVS" '.$bu_loc6.'>CVS</option>
+                        <option value="3PS" '.$bu_loc7.'>3PS</option>
+                        <option value="XTRUCK" '.$bu_loc8.'>XTRUCK-LDI</option>
+                        <option value="XTRUCK-NETMAN" '.$bu_loc9.'>XTRUCK-NETMAN</option>
+                        <option value="XTRUCK-MPDI" '.$bu_loc10.'>XTRUCK-MPDI</option>
+                        <option value="UNILAB" '.$bu_loc11.'>UNILAB</option>
+                        <option value="MAS-LDI" '.$bu_loc12.'>MAS-LDI</option>
+                        <option value="MAS-NETMAN" '.$bu_loc13.'>MAS-NETMAN</option>
+                        <option value="MAS-MPDI" '.$bu_loc14.'>MAS-MPDI</option>
                     </select>
                  </div>
                  <button style="float: right" class="btn btn-secondary" data-dismiss="modal"> Close </button>

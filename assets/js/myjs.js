@@ -761,6 +761,566 @@ $('#importldireturn_submit').on("submit", function(e){
             }
             else
             {
+                // swal({
+                //     title: "Textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#importTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#importTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#importldixtruck_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'importldixtruck_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#importTextfileXtruck").text('Uploading Textfile. Please Wait...');
+            // $("#customFile").prop('disabled',true);
+            $("#importTextfileXtruck").prop('disabled',true);
+            $("#loading2").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                swal({
+                    title: "Textfile is empty!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else if(data=="nocode")
+            {
+                swal({
+                    title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else
+            {
+                // swal({
+                //     title: "Textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#importTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#importTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#importldixtruckreturn_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'importldixtruckbo_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#importTextfileXtruckReturn").text('Uploading Textfile. Please Wait...');
+            // $("#customFile").prop('disabled',true);
+            $("#importTextfileXtruckReturn").prop('disabled',true);
+            $("#loading2").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                swal({
+                    title: "Textfile is empty!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else if(data=="nocode")
+            {
+                swal({
+                    title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else
+            {
+                // swal({
+                //     title: "Textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#importTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#importTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#importldixtrucksat_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'importldixtrucksat_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#importTextfileXtruckSat").text('Uploading Textfile. Please Wait...');
+            // $("#customFile").prop('disabled',true);
+            $("#importTextfileXtruckSat").prop('disabled',true);
+            $("#loading2").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                swal({
+                    title: "Textfile is empty!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else if(data=="nocode")
+            {
+                swal({
+                    title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else
+            {
+                // swal({
+                //     title: "Textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#importTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#importTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#importldixtrucksminc_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'importldixtrucksminc_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#importTextfileXtruckSmInc").text('Uploading Textfile. Please Wait...');
+            // $("#customFile").prop('disabled',true);
+            $("#importTextfileXtruckSmInc").prop('disabled',true);
+            $("#loading2").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                swal({
+                    title: "Textfile is empty!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else if(data=="nocode")
+            {
+                swal({
+                    title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else
+            {
+                // swal({
+                //     title: "Textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#importTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#importTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#importldibo_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'importldibo_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#importTextfileBo").text('Uploading Textfile. Please Wait...');
+            // $("#customFile").prop('disabled',true);
+            $("#importTextfileBo").prop('disabled',true);
+            $("#loading2").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                swal({
+                    title: "Textfile is empty!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else if(data=="nocode")
+            {
+                swal({
+                    title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else
+            {
+                // swal({
+                //     title: "Textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#importTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#importTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#importldixtruckpalawan_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'importldipalawan_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#importTextfileXtruckPalawan").text('Uploading Textfile. Please Wait...');
+            // $("#customFile").prop('disabled',true);
+            $("#importTextfileXtruckPalawan").prop('disabled',true);
+            $("#loading2").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                swal({
+                    title: "Textfile is empty!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else if(data=="nocode")
+            {
+                swal({
+                    title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else
+            {
+                // swal({
+                //     title: "Textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#importTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#importTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#importldixtruckutc_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'importldiutc_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#importTextfileXtruckUtc").text('Uploading Textfile. Please Wait...');
+            // $("#customFile").prop('disabled',true);
+            $("#importTextfileXtruckUtc").prop('disabled',true);
+            $("#loading2").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                swal({
+                    title: "Textfile is empty!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else if(data=="nocode")
+            {
+                swal({
+                    title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else
+            {
+                // swal({
+                //     title: "Textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#importTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#importTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#importldixtruckpalawanoplan_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'importldipalawanoplan_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#importTextfileXtruckPalawanOp").text('Uploading Textfile. Please Wait...');
+            // $("#customFile").prop('disabled',true);
+            $("#importTextfileXtruckPalawanOp").prop('disabled',true);
+            $("#loading2").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                swal({
+                    title: "Textfile is empty!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else if(data=="nocode")
+            {
+                swal({
+                    title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                    type: "warning",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+            }
+            else
+            {
                 swal({
                     title: "Textfile successfully uploaded!",
                     type: "success",
@@ -775,6 +1335,645 @@ $('#importldireturn_submit').on("submit", function(e){
                 $("#importTextfile").text('Upload Textfile');
                 $("#customFile").prop('disabled',false);
                 $("#importTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#exportldioplanbo_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'exportldioplanbo_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#exportOplanBoTextfile").text('Uploading Textfile. Please Wait...');
+            $("#customFile").prop('disabled',true);
+            $("#exportOplanBoTextfile").prop('disabled',true);
+            $("#loading").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                // swal({
+                //     title: "Payments textfile is empty!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // }
+                // ,
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else if(data=="nocode")
+            {
+                // swal({
+                //     title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else
+            {
+                // swal({
+                //     title: "Adjustments textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#exportOplanBoTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#exportOplanBoTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#exportldioplanreturn_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'exportldioplanreturn_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#exportOplanReturnTextfile").text('Uploading Textfile. Please Wait...');
+            $("#customFile").prop('disabled',true);
+            $("#exportOplanReturnTextfile").prop('disabled',true);
+            $("#loading").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                // swal({
+                //     title: "Payments textfile is empty!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // }
+                // ,
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else if(data=="nocode")
+            {
+                // swal({
+                //     title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else
+            {
+                swal({
+                    title: "Adjustments textfile successfully uploaded!",
+                    type: "success",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+                $("#exportOplanReturnTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#exportOplanReturnTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#updateldipayment_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'updateldipayment_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#updateXtruckPaymentTextfile").text('Uploading Textfile. Please Wait...');
+            $("#customFile").prop('disabled',true);
+            $("#updateXtruckPaymentTextfile").prop('disabled',true);
+            $("#loading").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                // swal({
+                //     title: "Payments textfile is empty!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // }
+                // ,
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else if(data=="nocode")
+            {
+                // swal({
+                //     title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else
+            {
+                // swal({
+                //     title: "Adjustments textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#updateXtruckPaymentTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#updateXtruckPaymentTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#exportldi_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'exportldi_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#exportTextfile").text('Uploading Textfile. Please Wait...');
+            $("#customFile").prop('disabled',true);
+            $("#exportTextfile").prop('disabled',true);
+            $("#loading").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                // swal({
+                //     title: "Payments textfile is empty!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // }
+                // ,
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else if(data=="nocode")
+            {
+                // swal({
+                //     title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else
+            {
+                // swal({
+                //     title: "Adjustments textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#exportTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#exportTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#exportldioverage_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'exportldioverage_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#exporOverageTextfile").text('Uploading Textfile. Please Wait...');
+            $("#customFile").prop('disabled',true);
+            $("#exporOverageTextfile").prop('disabled',true);
+            $("#loading").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                // swal({
+                //     title: "Payments textfile is empty!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // }
+                // ,
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else if(data=="nocode")
+            {
+                // swal({
+                //     title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else
+            {
+                // swal({
+                //     title: "Adjustments textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#exporOverageTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#exporOverageTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#exportldiprice_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'exportldiprice_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#exportPriceTextfile").text('Uploading Textfile. Please Wait...');
+            $("#customFile").prop('disabled',true);
+            $("#exportPriceTextfile").prop('disabled',true);
+            $("#loading").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                // swal({
+                //     title: "Payments textfile is empty!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // }
+                // ,
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else if(data=="nocode")
+            {
+                // swal({
+                //     title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else
+            {
+                // swal({
+                //     title: "Adjustments textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#exportPriceTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#exportPriceTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#exportldiudc_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'exportldiudc_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#exportUdcTextfile").text('Uploading Textfile. Please Wait...');
+            $("#customFile").prop('disabled',true);
+            $("#exportUdcTextfile").prop('disabled',true);
+            $("#loading").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                // swal({
+                //     title: "Payments textfile is empty!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // }
+                // ,
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else if(data=="nocode")
+            {
+                // swal({
+                //     title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else
+            {
+                // swal({
+                //     title: "Adjustments textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#exportUdcTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#exportUdcTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#exportldioverageudc_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'exportldioverageudc_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#exporOverageUdcTextfile").text('Uploading Textfile. Please Wait...');
+            $("#customFile").prop('disabled',true);
+            $("#exporOverageUdcTextfile").prop('disabled',true);
+            $("#loading").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                // swal({
+                //     title: "Payments textfile is empty!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // }
+                // ,
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else if(data=="nocode")
+            {
+                // swal({
+                //     title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else
+            {
+                // swal({
+                //     title: "Adjustments textfile successfully uploaded!",
+                //     type: "success",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+                $("#exporOverageUdcTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#exporOverageUdcTextfile").prop('disabled',false);
+                $("#loading").hide();
+            }
+        },
+        error: function() {
+            alert('Something is wrong');
+        }
+    });
+});
+
+$('#exportldipriceudc_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    $.ajax({
+        url: 'exportldipriceudc_file',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#exportPriceUdcTextfile").text('Uploading Textfile. Please Wait...');
+            $("#customFile").prop('disabled',true);
+            $("#exportPriceUdcTextfile").prop('disabled',true);
+            $("#loading").show();
+        },
+        success: function(data) {
+            if(data=="no-data")
+            {
+                // swal({
+                //     title: "Payments textfile is empty!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // }
+                // ,
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else if(data=="nocode")
+            {
+                // swal({
+                //     title: "There is a Jefe de Viaje Code in the textfile that is not yet setup in Users! Please check the textfile first and try again!",
+                //     type: "warning",
+                //     showCancelbutton: false
+                // },
+                // function(isok) {
+                //     if(isok){
+                //         window.location.reload();
+                //     }
+                // }
+                // );
+            }
+            else
+            {
+                swal({
+                    title: "Adjustments textfile successfully uploaded!",
+                    type: "success",
+                    showCancelbutton: false
+                },
+                function(isok) {
+                    if(isok){
+                        window.location.reload();
+                    }
+                }
+                );
+                $("#exportPriceUdcTextfile").text('Upload Textfile');
+                $("#customFile").prop('disabled',false);
+                $("#exportPriceUdcTextfile").prop('disabled',false);
                 $("#loading").hide();
             }
         },

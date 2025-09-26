@@ -191,26 +191,20 @@
                             <?php 
                             if($row2['pay_date']==date('Y-m-d')) {
                              echo '<td align="center">';
-                            //  if($row2['status']=="") {
-                            echo '<a title="Edit Check" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick=edit_sm_check('.$row2['payment_id'].')><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
-                            //   } 
+                             if($row2['status']=="") {
+                            echo '<a title="Edit Check" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick=edit_sm_check_ldi('.$row2['payment_id'].')><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
+                              } 
                             echo '<a title="View Check" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewCasherPaymentModal" onclick=viewcashierpayment_content('.$row2['payment_id'].')><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;';
                             //  if($row2['status']=="") { 
-                            if($this->session->userdata('id_no') == '01000018832'){
-                                     echo '<a title="Delete Check2" style="color: red;cursor: pointer" onclick="deletecashier_content(' . $row2['payment_id'] . ', \'' . $result3 . '\')"><i class="fas fa-trash fa-lg"></i></a>';
-                                  }
+                            echo '<a title="Delete Check" style="color: red;cursor: pointer" onclick=deletecashier_content('.$row2['payment_id'].')><i class="fas fa-trash fa-lg"></i></a>';
                             //   } 
                             echo '</td>';
                               } 
                             else 
                             { 
                             echo '<td align="center">';
-                                  echo '<a title="Edit Check" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick=edit_sm_check('.$row2['payment_id'].')><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
-                                  echo '<a title="View Check" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewCasherPaymentModal" onclick=viewcashierpayment_content('.$row2['payment_id'].')><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;';
-                                  if($this->session->userdata('id_no') == '01000018832'){
-                                     echo '<a title="Delete Check2" style="color: red;cursor: pointer" onclick="deletecashier_content(' . $row2['payment_id'] . ', \'' . $result3 . '\')"><i class="fas fa-trash fa-lg"></i></a>';
-                                  }
-                                 
+                                  echo '<a title="Edit Check" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick=edit_sm_check_ldi('.$row2['payment_id'].')><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
+                                  echo '<a title="View Check" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewCasherPaymentModal" onclick=viewcashierpayment_content('.$row2['payment_id'].')><i class="fas fa-eye fa-lg"></i></a>';
                             echo '</td>'; 
                             } 
                             echo '</tr>'; 

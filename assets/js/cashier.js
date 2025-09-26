@@ -144,15 +144,16 @@ $(document).ready(function() {
     $('#cashier_sm_ledger').DataTable( {
         "scrollX": true,
         "fixedColumns":   {
-            "leftColumns": 1,
-            "rightColumns": 1
+            "leftColumns": 4,
+            "rightColumns": 4
         },
         "columnDefs": [
             {
-                "orderable": false,  // Set orderable to false for the first column (index 0)
-                "targets": 0
+                "orderable": true,  // Set orderable to false for the first column (index 0)
+                "targets": 1
             }
-        ]
+        ],
+        "order": [[1, 'asc']] // Order by 2nd column (index 1), ascending
 
     } );
 } );
@@ -302,12 +303,12 @@ function approve_sm_denomldi(ids)
         closeOnConfirm: false,
         closeOnCancel: true,
         showLoaderOnConfirm: true
-      },
+    },
       
-      function(isConfirm) {
-          if(isConfirm)
-          {
-             $.ajax({
+    function(isConfirm) {
+        if(isConfirm)
+        {
+            $.ajax({
                 url: baseurl + 'approve_sm_denom',
                 type: 'POST',
                 data: {ids:ids},
@@ -512,6 +513,833 @@ function approve_sm_denomsldi(ids)
       );
 }
 
+function delete_sm_payments(ids)
+{
+    swal({
+        title: "Are you sure to delete this salesman payments?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'delete_payments_op',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {
+
+                   console.log('Data received:', data);
+                    if(data.success)
+                    {
+                        
+                        swal({
+                            title: data.message,
+                            type: "success",
+                            showCancelbutton: false,
+                            closeModal: false
+                        },
+                            function(isok) {
+                                if(isok){
+                                    
+                                    window.location.reload();
+
+                                    
+                                }
+                            }
+                        );
+                    }
+                    
+                }
+            });
+          }
+      }
+      );
+}
+
+function change_check(ids)
+{
+    swal({
+        title: "Are you sure to convert this CHECK payment to CASH?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'change_check',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {            
+                    swal({
+                        title: "Payment type successfully updated!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            window.location.reload();
+                        }
+                    }
+                    );
+                }
+            });
+          }
+      }
+      );
+}
+
+function change_check_op(ids)
+{
+    swal({
+        title: "Are you sure to convert this CHECK payment to CASH?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'change_check_op',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {            
+                    swal({
+                        title: "Payment type successfully updated!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            window.location.reload();
+                        }
+                    }
+                    );
+                }
+            });
+          }
+      }
+      );
+}
+
+function change_check_xt(ids)
+{
+    swal({
+        title: "Are you sure to convert this XTRUCK CHECK payment to CASH?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'change_check_xt',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {            
+                    swal({
+                        title: "Payment type successfully updated!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            window.location.reload();
+                        }
+                    }
+                    );
+                }
+            });
+          }
+      }
+      );
+}
+
+function update_inc_xt(ids)
+{
+    swal({
+        title: "Are you sure to update salesman's incentives?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'update_inc_xt',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {            
+                    swal({
+                        title: "Incentives successfully updated!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            window.location.reload();
+                        }
+                    }
+                    );
+                }
+            });
+          }
+      }
+      );
+}
+
+// function viewsminc_content_ldi(ids)
+// {
+//     $.ajax({
+//         url: baseurl + 'view_sm_inc_ldi',
+//         type: 'POST',
+//         data: {ids:ids},
+//         error: function() {
+//             alert('Something is wrong');
+//         },
+//         success: function(data) {                 
+//             $("#viewsminc_content_ldi").html(data);
+//         }
+//     });
+// }
+
+function delete_check_op(ids)
+{
+    swal({
+        title: "Are you sure to delete this payment?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+        
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'delete_check_op',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {            
+                    swal({
+                        title: "Payment type successfully deleted!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            window.location.reload();
+                        }
+                    }
+                    );
+                }
+            });
+          }
+      }
+      );
+}
+
+function delete_check_xt(ids)
+{
+    swal({
+        title: "Are you sure to delete this EXTRUCK payment?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+        
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'delete_check_xt',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {            
+                    swal({
+                        title: "Extruck Payment successfully deleted!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            window.location.reload();
+                        }
+                    }
+                    );
+                }
+            });
+          }
+      }
+      );
+}
+
+function delete_palawan_xt(ids)
+{
+    swal({
+        title: "Are you sure to delete this Palawan Remittance?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+        
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'delete_palawan_xt',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {            
+                    swal({
+                        title: "Palawan remittance successfully deleted!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            window.location.reload();
+                        }
+                    }
+                    );
+                }
+            });
+          }
+      }
+      );
+}
+
+function delete_palawan_op(ids) {
+    swal(
+      {
+        title: "Are you sure to delete this Palawan Remittance (PREBOOKING)?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+  
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true,
+      },
+  
+      function (isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+            url: baseurl + "delete_palawan_op",
+            type: "POST",
+            data: { ids: ids },
+            error: function () {
+              alert("Something is wrong");
+            },
+            success: function (data) {
+              swal(
+                {
+                  title: "Palawan remittance successfully deleted!",
+                  type: "success",
+                  showCancelbutton: false,
+                  closeModal: false,
+                },
+                function (isok) {
+                  if (isok) {
+                    window.location.reload();
+                  }
+                }
+              );
+            },
+          });
+        }
+      }
+    );
+}
+
+function delete_bo_op(ids) {
+    swal(
+      {
+        title: "Are you sure to delete this BO Payment (PREBOOKING)?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+  
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true,
+      },
+  
+      function (isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+            url: baseurl + "delete_bo_op",
+            type: "POST",
+            data: { ids: ids },
+            error: function () {
+              alert("Something is wrong");
+            },
+            success: function (data) {
+              swal(
+                {
+                  title: "BO payment successfully deleted!",
+                  type: "success",
+                  showCancelbutton: false,
+                  closeModal: false,
+                },
+                function (isok) {
+                  if (isok) {
+                    window.location.reload();
+                  }
+                }
+              );
+            },
+          });
+        }
+      }
+    );
+  }
+
+function delete_satellite_xt(ids)
+{
+    swal({
+        title: "Are you sure to delete this Satellite Payment?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+        
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'delete_satellite_xt',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {            
+                    swal({
+                        title: "Satellite payment successfully deleted!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            window.location.reload();
+                        }
+                    }
+                    );
+                }
+            });
+          }
+      }
+      );
+}
+
+function delete_utc_xt(ids) {
+    swal(
+      {
+        title: "Are you sure to delete this Under the Cup Payment?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+  
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true,
+      },
+  
+      function (isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+            url: baseurl + "delete_utc_xt",
+            type: "POST",
+            data: { ids: ids },
+            error: function () {
+              alert("Something is wrong");
+            },
+            success: function (data) {
+              swal(
+                {
+                  title: "Under the Cup payment successfully deleted!",
+                  type: "success",
+                  showCancelbutton: false,
+                  closeModal: false,
+                },
+                function (isok) {
+                  if (isok) {
+                    window.location.reload();
+                  }
+                }
+              );
+            },
+          });
+        }
+      }
+    );
+  }
+
+function delete_ret_op(ids)
+{
+    swal({
+        title: "Are you sure to delete this Oplan Return?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+        
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'delete_ret_op',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {            
+                    swal({
+                        title: "Oplan return successfully deleted!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            window.location.reload();
+                        }
+                    }
+                    );
+                }
+            });
+          }
+      }
+      );
+}
+
+function delete_ret_xt(ids)
+{
+    swal({
+        title: "Are you sure to delete this XTRUCK Return?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+        
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'delete_ret_xt',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {            
+                    swal({
+                        title: "XTRUCK return successfully deleted!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            window.location.reload();
+                        }
+                    }
+                    );
+                }
+            });
+          }
+      }
+      );
+}
+
+function untag_denom_xt(srr_no) {
+    console.log(srr_no);
+    let srr = srr_no.getAttribute('data-srr'); 
+
+    swal(
+      {
+        title: "Are you sure to untag this denomination?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+  
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true,
+      },
+  
+      function (isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+            url: baseurl + "untag_denom_xt",
+            type: "POST",
+            data: { srr_no: srr },
+            error: function () {
+              alert("Something is wrong");
+            },
+            success: function (data) {
+              swal(
+                {
+                  title: "Denomination successfully untagged!",
+                  type: "success",
+                  showCancelbutton: false,
+                  closeModal: false,
+                },
+                function (isok) {
+                  if (isok) {
+                    window.location.reload();
+                  }
+                }
+              );
+            },
+          });
+        }
+      }
+    );
+}
+
+function unfile_denom_xt(srr_no) {
+    console.log(srr_no);
+    let srr = srr_no.getAttribute('data-srr'); 
+
+    swal(
+      {
+        title: "Are you sure to unfile this EXTRUCK denomination?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+  
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true,
+      },
+  
+      function (isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+            url: baseurl + "unfile_denom_xt",
+            type: "POST",
+            data: { srr_no: srr },
+            error: function () {
+              alert("Something is wrong");
+            },
+            success: function (data) {
+              swal(
+                {
+                  title: "Denomination successfully unfiled!",
+                  type: "success",
+                  showCancelbutton: false,
+                  closeModal: false,
+                },
+                function (isok) {
+                  if (isok) {
+                    window.location.reload();
+                  }
+                }
+              );
+            },
+          });
+        }
+      }
+    );
+}
+
+function unfile_denom_op(srr_no) {
+    console.log(srr_no);
+    let srr = srr_no.getAttribute("data-srr");
+  
+    swal(
+      {
+        title: "Are you sure to unfile this OPLAN denomination?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        cancelButtonClass: "btn-secondary",
+  
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true,
+      },
+  
+      function (isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+            url: baseurl + "unfile_denom_op",
+            type: "POST",
+            data: { srr_no: srr },
+            error: function () {
+              alert("Something is wrong");
+            },
+            success: function (data) {
+              swal(
+                {
+                  title: "Denomination successfully unfiled!",
+                  type: "success",
+                  showCancelbutton: false,
+                  closeModal: false,
+                },
+                function (isok) {
+                  if (isok) {
+                    window.location.reload();
+                  }
+                }
+              );
+            },
+          });
+        }
+      }
+    );
+}
+
 function checkstatus(ids,status)
 {
     $.ajax({
@@ -557,17 +1385,38 @@ function cashier_remarks(ids)
     });
 }
 
-function cashier_backdate(ids)
+function sm_incentives(ids, user_id)
 {
     $.ajax({
-        url: baseurl + 'cashier_backdate',
+        url: baseurl + 'sm_incentives',
         type: 'POST',
-        data: {ids:ids},
+        data: {
+            ids: ids,
+            user_id: user_id
+        },
         error: function() {
             alert('Something is wrong');
         },
         success: function(data) {                 
-            $("#backdate_content").html(data);
+            $("#incentives_content").html(data);
+        }
+    });
+}
+
+function sm_incentives_edit(ids, user_id)
+{
+    $.ajax({
+        url: baseurl + 'sm_incentives_edit',
+        type: 'POST',
+        data: {
+            ids: ids,
+            user_id: user_id
+        },
+        error: function() {
+            alert('Something is wrong');
+        },
+        success: function(data) {                 
+            $("#incentives_edit_content").html(data);
         }
     });
 }
@@ -667,12 +1516,256 @@ function viewcashierpayment_content(ids)
     });
 }
 
+function viewcashierpayment_content_ldi(ids)
+{
+    $.ajax({
+        url: baseurl + 'view_cashier_payment_ldi',
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            alert('Something is wrong');
+        },
+        success: function(data) {                 
+            $("#viewcashierpayment_content").html(data);
+        }
+    });
+}
+
+function viewcashierpayment_content_ldi_ext(ids)
+{
+    $.ajax({
+        url: baseurl + 'view_cashier_payment_ldi_ext',
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            alert('Something is wrong');
+        },
+        success: function(data) {                 
+            $("#viewcashierpayment_content").html(data);
+        }
+    });
+}
+
 function cashiersm_form_date()
 {
     var ddate = $("[name='datenow']").val();
     window.location = 'smdenomdata/'+ddate;
     // window.open('smdenomdata/'+ddate, '_blank');
 }
+
+function cashiersm_form_date_oplan()
+{
+    var ddate = $("[name='datenow']").val();
+    var ddate2 = $("[name='datenow2']").val();
+    var sm = $("[name='sm']").val();
+    //var pay_stat = $("[name='pay_stat']").val();
+    //console.log(pay_stat);
+    window.location = 'smpaymentdataop/'+ddate+'/'+ddate2+'/'+sm;
+    // window.open('smdenomdata/'+ddate, '_blank');
+}
+
+function cashiersm_form_date_xt()
+{
+    var ddate = $("[name='datenow']").val();
+    var ddate2 = $("[name='datenow2']").val();
+    var sm = $("[name='sm_xt']").val();
+    // console.log(ddate2);
+    window.location = 'smpaymentdataxt/'+ddate+'/'+ddate2+'/'+sm;
+    
+}
+
+function cashiersm_form_date_xt_palawan()
+{
+    var ddate = $("[name='datenow']").val();
+    var ddate2 = $("[name='datenow2']").val();
+    var sm = $("[name='sm_xt']").val();
+    // console.log(ddate2);
+    window.location = 'smpaymentdataxtpal/'+ddate+'/'+ddate2+'/'+sm;
+    
+}
+
+function cashiersm_form_date_xt_palawan_ref()
+{
+    var ref_no = $("[name='ref_no']").val();
+    window.location = 'smpaymentdataxtpalref/'+ref_no;
+    
+}
+
+function cashiersm_form_date_op_palawan() {
+    var ddate = $("[name='datenow']").val();
+    var ddate2 = $("[name='datenow2']").val();
+    var sm = $("[name='sm']").val();
+    // console.log(ddate2);
+    window.location = "smpaymentdataoppal/" + ddate + "/" + ddate2 + "/" + sm;
+  }
+  
+  function cashiersm_form_date_op_palawan_ref() {
+    var ref_no = $("[name='ref_no']").val();
+    window.location = "smpaymentdataoppalref/" + ref_no;
+  }
+
+function cashiersm_form_date_xt_satellite()
+{
+    var ddate = $("[name='datenow']").val();
+    var ddate2 = $("[name='datenow2']").val();
+    var sm = $("[name='sm_xt']").val();
+    // console.log(ddate2);
+    window.location = 'smpaymentdataxtsat/'+ddate+'/'+ddate2+'/'+sm;
+    
+}
+
+function cashiersm_form_date_xt_satellite_ref()
+{
+    var ref_no = $("[name='ref_no']").val();
+    window.location = 'smpaymentdataxtsatref/'+ref_no;
+    
+}
+
+function cashiersm_form_date_xt_utc() {
+    var ddate = $("[name='datenow']").val();
+    var ddate2 = $("[name='datenow2']").val();
+    var sm = $("[name='sm_xt']").val();
+    // console.log(ddate2);
+    window.location = "smpaymentdataxtutc/" + ddate + "/" + ddate2 + "/" + sm;
+}
+
+function cashiersm_form_date_xt_utc_ref() {
+    var ref_no = $("[name='ref_no']").val();
+    window.location = "smpaymentdataxtutcref/" + ref_no;
+}
+
+function cashiersm_form_date_op_bo() {
+    var ddate = $("[name='datenow']").val();
+    var ddate2 = $("[name='datenow2']").val();
+    var sm = $("[name='sm']").val();
+    // console.log(ddate2);
+    window.location = "smpaymentdataopbo/" + ddate + "/" + ddate2 + "/" + sm;
+}
+
+function cashiersm_form_date_op_bo_ref() {
+    var ref_no = $("[name='ref_no']").val();
+    window.location = "smpaymentdataopboref/" + ref_no;
+}
+
+function cashiersm_form_date_xt_inc() {
+    var sm = $("[name='sm']").val();
+    window.location = "smpaymentdataxtinc/" + sm;
+}
+
+function cashiersm_form_date_xt_denom() {
+    var ddate = $("[name='datenow']").val();
+    var ddate2 = $("[name='datenow2']").val();
+    var sm = $("[name='sm_xt']").val();
+    // console.log(ddate2);
+    window.location = "smdenomdataxt/" + ddate + "/" + ddate2 + "/" + sm;
+}
+
+function cashiersm_form_date_xt_denom_no() {
+    var ref_no = $("[name='ref_no']").val();
+    window.location = "smdenomdataxtsrr/" + ref_no;
+}
+
+function cashiersm_form_date_op_denom() {
+    var ddate = $("[name='datenow']").val();
+    var ddate2 = $("[name='datenow2']").val();
+    var sm = $("[name='sm']").val();
+    // console.log(ddate2);
+    window.location = "smdenomdataop/" + ddate + "/" + ddate2 + "/" + sm;
+  }
+  
+function cashiersm_form_date_op_denom_no() {
+    var ref_no = $("[name='ref_no']").val();
+    window.location = "smdenomdataopsrr/" + ref_no;
+}
+
+function cashiersm_form_date_oplan_ret() {
+    var ddate = $("[name='datenow']").val();
+    var ddate2 = $("[name='datenow2']").val();
+    var sm = $("[name='sm']").val();
+    
+    window.location = "smreturndataop/" + ddate + "/" + ddate2 + "/" + sm;
+    
+}
+
+function cashiersm_form_date_oplan_si_ret()
+{
+    
+    var si = $("[name='si']").val();
+    
+    window.location = 'smreturndataopsi/'+si;
+    
+}
+
+function cashiersm_form_date_xt_ret() {
+    var ddate = $("[name='datenow']").val();
+    var ddate2 = $("[name='datenow2']").val();
+    var sm = $("[name='sm_xt']").val();
+    
+    window.location = "smreturndataxt/" + ddate + "/" + ddate2 + "/" + sm;
+    
+}
+
+function cashiersm_form_date_xt_si_ret()
+{
+    
+    var si = $("[name='si']").val();
+    
+    window.location = 'smreturndataxtsi/'+si;
+    
+}
+
+
+function dvsrr_date_xt()
+{
+    var datefrom = $("[name='datefrom']").val();
+    var dateto = $("[name='dateto']").val();
+    var sm = $("[name='sm_xt']").val();
+    // console.log(ddate2);
+    window.location = 'dvsrrxt/'+datefrom+'/'+dateto+'/'+sm;
+    
+}
+
+function checkreturned()
+{
+    var datefrom = $("[name='datefrom']").val();
+    var dateto = $("[name='dateto']").val();
+    
+    // console.log(ddate2);
+    window.location = 'checkreturned/'+datefrom+'/'+dateto;
+    
+}
+
+function checkreturnedop()
+{
+    var datefrom = $("[name='datefrom']").val();
+    var dateto = $("[name='dateto']").val();
+    
+    // console.log(ddate2);
+    window.location = 'checkreturnedop/'+datefrom+'/'+dateto;
+    
+}
+
+function dvsrr_date_op()
+{
+    var datefrom = $("[name='datefrom']").val();
+    var dateto = $("[name='dateto']").val();
+    var sm = $("[name='sm']").val();
+    // console.log(ddate2);
+    window.location = 'dvsrrop/'+datefrom+'/'+dateto+'/'+sm;
+    
+}
+
+function cashiersm_form_date_oplan_si()
+{
+    //var ddate = $("[name='datenow']").val();
+    var si = $("[name='si']").val();
+    //var pay_stat = $("[name='pay_stat']").val();
+    //console.log(pay_stat);
+    window.location = 'smpaymentdataopsi/'+si;
+    // window.open('smdenomdata/'+ddate, '_blank');
+}
+
+
 
 function checkclearing_form_date()
 {
@@ -689,11 +1782,45 @@ function account_form_date()
     window.open('accountreport/'+ddate, '_blank');
 }
 
-function colsum_date()
+function colsum_date() {
+    var datefrom = $("[name='datefrom']").val();
+    var dateto = $("[name='dateto']").val();
+    var sm = $("[name='sm']").val();
+    var loc = $("[name='loc']").val();
+    
+    window.open('colsumreportop/' + datefrom + '/' + dateto + '/' + sm + '/' + loc, '_blank');
+}
+
+function colsum_date_excel() {
+    var datefrom = $("[name='datefrom']").val();
+    var dateto = $("[name='dateto']").val();
+    var sm = $("[name='sm']").val();
+    var loc = $("[name='loc']").val();
+    
+    window.open('colsumreportopexcel/' + datefrom + '/' + dateto + '/' + sm + '/' + loc, '_blank');
+}
+
+function colsum_date_mpdi() { 
+    var datefrom = $("[name='datefrom']").val();
+    var dateto = $("[name='dateto']").val();
+    var sm = $("[name='sm']").val();
+    var loc = $("[name='loc']").val();
+  
+    window.open(
+      "colsumreportmpdi/" + datefrom + "/" + dateto + "/" + sm + "/" + loc,
+      "_blank"
+    );
+  }
+
+function colsum_date_xt()
 {
-    var ddate = $("[name='datenow']").val();
-    // window.location = 'smdenomdata/'+ddate;
-    window.open('colsumreport/'+ddate, '_blank');
+    var datefrom = $("[name='datefrom']").val();
+    var dateto = $("[name='dateto']").val();
+    var sm = $("[name='sm_xt']").val();
+    var loc = $("[name='loc']").val();
+    console.log(loc);
+    window.open('colsumreportxt/' + datefrom + '/' + dateto + '/' + sm + '/' + loc, '_blank');
+    
 }
 
 function pdcdc_form_date()
@@ -703,6 +1830,12 @@ function pdcdc_form_date()
     var type = $('input[name="reportradio"]:checked').val();
     // window.location = 'smdenomdata/'+ddate;
     window.open('pdcdcreport/'+ddate+'/'+type+'/'+ddate1, '_blank');
+}
+
+function ret_pdcdc_form_date()
+{
+    
+    window.open('retpdcdcreport', '_blank');
 }
 
 function pdcdc_excel_date()
@@ -784,6 +1917,61 @@ function upload_payments(ids)
                 },
                 success: function(data) {       
                     // alert(data);    
+                    if (data == 'done_prebooking') {
+						swal({
+							title: "Data already uploaded!",
+							text: 'Please check the uploaded data in ARIS',
+							type: "warning",
+							showCancelButton: false,
+							closeModal: false
+						});
+					} else {
+						swal({
+							title: "Data successfully uploaded!",
+							type: "success",
+							showCancelButton: false,
+							closeModal: false
+						},
+						function(isok) {
+							if (isok) {
+								window.location.reload();
+							}
+						});
+					}
+                }
+            });
+          }
+      }
+      );
+}
+
+function upload_payments_inputted(ids)
+{
+    swal({
+        title: "Are you sure to upload the data to ARIS?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'upload_payments_inputted',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {       
+                    // alert(data);    
                     swal({
                         title: "Data successfully uploaded!",
                         type: "success",
@@ -802,6 +1990,323 @@ function upload_payments(ids)
       }
       );
 }
+
+function upload_payments_xtruck(ids)
+{
+    swal({
+        title: "Are you sure to upload the data to ARIS?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'upload_payments_xtruck',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {       
+                    // alert(data);  
+					
+					
+                    if (data == 'done') {
+						swal({
+							title: "Data already uploaded!",
+							text: 'Please check the uploaded data in ARIS',
+							type: "warning",
+							showCancelButton: false,
+							closeModal: false
+						});
+					} else {
+						swal({
+							title: "Data successfully uploaded!",
+							type: "success",
+							showCancelButton: false,
+							closeModal: false
+						},
+						function(isok) {
+							if (isok) {
+								const selectedDate = $('#ledger-date').val(); // Replace with your real ID
+                                loadTable(selectedDate);
+							}
+						});
+					}
+                }
+            });
+          }
+      }
+      );
+}
+
+function upload_payments_xtruck_udc(ids)
+{
+    swal({
+        title: "Are you sure to upload the data to ARIS-UDC?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'upload_payments_xtruck_udc',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {       
+                    // alert(data);  
+					
+					
+                    if (data == 'done') {
+						swal({
+							title: "Data already uploaded!",
+							text: 'Please check the uploaded data in ARIS',
+							type: "warning",
+							showCancelButton: false,
+							closeModal: false
+						});
+					} else {
+						swal({
+							title: "Data successfully uploaded!",
+							type: "success",
+							showCancelButton: false,
+							closeModal: false
+						},
+						function(isok) {
+							if (isok) {
+								window.location.reload();
+							}
+						});
+					}
+                }
+            });
+          }
+      }
+      );
+}
+
+function upload_payments_xtruck_big(ids)
+{
+    swal({
+        title: "Are you sure to upload the data to ARIS-BIG-E?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+      },
+      
+      function(isConfirm) {
+          if(isConfirm)
+          {
+             $.ajax({
+                url: baseurl + 'upload_payments_xtruck_big',
+                type: 'POST',
+                data: {ids:ids},
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {       
+                    // alert(data);    
+                    if (data == 'done') {
+						swal({
+							title: "Data already uploaded!",
+							text: 'Please check the uploaded data in ARIS',
+							type: "warning",
+							showCancelButton: false,
+							closeModal: false
+						});
+					} else {
+						swal({
+							title: "Data successfully uploaded!",
+							type: "success",
+							showCancelButton: false,
+							closeModal: false
+						},
+						function(isok) {
+							if (isok) {
+								window.location.reload();
+							}
+						});
+					}
+                }
+            });
+          }
+      }
+      );
+}
+
+function download_payments_xtruck(ids) {
+    swal({
+        title: "Are you sure to download the APPROVED denomination?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+
+    },
+    function(isConfirm) {
+        if (isConfirm) {
+            fetch(baseurl + 'api/get_data_denom', {
+                method: 'POST', // or 'POST' depending on your API requirement
+                // data: {ids:ids},
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ids: ids }) // Convert the data to a JSON string
+            })
+            .then(response => {
+                // Check if the response is successful
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                // Extract filename from Content-Disposition header
+                const disposition = response.headers.get('Content-Disposition');
+                let filename = 'download.txt'; // Default filename
+                if (disposition && disposition.indexOf('attachment') !== -1) {
+                    const filenameRegex = /filename[^;=\n]*=[\'"]([^\'"]*)[\'"]/;
+                    const matches = filenameRegex.exec(disposition);
+                    if (matches != null && matches[1]) { 
+                        filename = matches[1];
+                    }
+                }
+            
+                // Return the response as a blob
+                return response.blob().then(blob => ({ blob, filename }));
+            })
+            .then(({ blob, filename }) => {
+                // Create a link element
+                const link = document.createElement('a');
+                // Create a URL for the blob
+                link.href = URL.createObjectURL(blob);
+                // Set the filename for the download
+                link.download = filename;
+                // Append the link to the body
+                document.body.appendChild(link);
+                // Simulate a click on the link to trigger the download
+                link.click();
+                // Remove the link from the document
+                document.body.removeChild(link);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            })
+            .finally(() => {
+                swal({
+                    title: "Data successfully downloaded!",
+                    type: "success",
+                    showCancelButton: false,
+                    closeOnConfirm: true
+                });
+            });
+        }
+    });
+}
+
+function download_payments_mpdi(ids) {
+    swal({
+        title: "Are you sure to download the APPROVED MPDI denomination?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+
+    },
+    function(isConfirm) {
+        if (isConfirm) {
+            fetch(baseurl + 'api/get_data_denom_mpdi', {
+                method: 'POST', // or 'POST' depending on your API requirement
+                // data: {ids:ids},
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ids: ids }) // Convert the data to a JSON string
+            })
+            .then(response => {
+                // Check if the response is successful
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                // Extract filename from Content-Disposition header
+                const disposition = response.headers.get('Content-Disposition');
+                let filename = 'download.txt'; // Default filename
+                if (disposition && disposition.indexOf('attachment') !== -1) {
+                    const filenameRegex = /filename[^;=\n]*=[\'"]([^\'"]*)[\'"]/;
+                    const matches = filenameRegex.exec(disposition);
+                    if (matches != null && matches[1]) { 
+                        filename = matches[1];
+                    }
+                }
+            
+                // Return the response as a blob
+                return response.blob().then(blob => ({ blob, filename }));
+            })
+            .then(({ blob, filename }) => {
+                // Create a link element
+                const link = document.createElement('a');
+                // Create a URL for the blob
+                link.href = URL.createObjectURL(blob);
+                // Set the filename for the download
+                link.download = filename;
+                // Append the link to the body
+                document.body.appendChild(link);
+                // Simulate a click on the link to trigger the download
+                link.click();
+                // Remove the link from the document
+                document.body.removeChild(link);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            })
+            .finally(() => {
+                swal({
+                    title: "Data successfully downloaded!",
+                    type: "success",
+                    showCancelButton: false,
+                    closeOnConfirm: true
+                });
+            });
+        }
+    });
+}
+
 
 function customer_check(ids)
 {
@@ -831,6 +2336,39 @@ function print_alldenom_LDI(dates)
     var loc = $("[name='loc']").val();
     //console.log(loc);
     window.open(baseurl + 'printalldenom_LDI/'+dates+'/'+loc, '_blank');
+}
+
+function print_alldenom_LDI_per_Date()
+{
+    // window.location = 'smdenomdata/'+ddate;
+    var loc = $("[name='loc']").val();
+    var datefrom = $("[name='datefrom']").val();
+    var dateto = $("[name='dateto']").val();
+    //console.log(loc);
+    window.open(baseurl + 'printalldenom_LDI_per_Date/' + datefrom + '/' + dateto, '_blank');
+
+}
+
+function print_palawan_LDI_per_Date()
+{
+    // window.location = 'smdenomdata/'+ddate;
+    var loc = $("[name='loc']").val();
+    var datefrom = $("[name='datefrom']").val();
+    var dateto = $("[name='dateto']").val();
+    //console.log(loc);
+    window.open(baseurl + 'printallpalawan_LDI_per_Date/' + datefrom + '/' + dateto + '/' + loc, '_blank');
+
+}
+
+function print_alldenom_LDI_per_Date_Excel()
+{
+    // window.location = 'smdenomdata/'+ddate;
+    var loc = $("[name='loc']").val();
+    var datefrom = $("[name='datefrom']").val();
+    var dateto = $("[name='dateto']").val();
+    //console.log(loc);
+    window.open(baseurl + 'printalldenom_LDI_per_Date_Excel/' + datefrom + '/' + dateto, '_blank');
+
 }
 
 function print_alldenom_LDI_cashier(dates)
@@ -952,6 +2490,40 @@ function customer_masterfile2()
     }, 1000);
 }
 
+function customer_masterfileccd()
+{
+    $(".customermasterfileccd").html(
+        'Loading, Please wait...'
+    )
+    setTimeout(function(){
+        $(".customermasterfileccd").html(
+            '<table class="table table-bordered customer-masterccd compact" width="100%" cellspacing="0">'+
+            '<thead>'+
+                '<tr>'+
+                    '<th>Code</th>'+
+                    '<th>Name</th>'+
+                    '<th>Address</th>'+
+                    '<th>Action</th>'+
+                '</tr>'+
+            '</thead>'+
+            '<tbody></tbody>'+
+        '</table>'
+        );
+
+        $('.customer-masterccd').DataTable( {
+            "ajax": baseurl + "get_customer3",
+            "bDestroy": true,
+            "columns": [
+                    { "data": "code" },
+                    { "data": "name" },
+                    { "data": "address1" },
+                    { "data": "action" }
+                ],
+            "scrollX": true
+        });
+    }, 1000);
+}
+
 function customer_masterfile3()
 {
     $(".customermasterfile2").html(
@@ -1008,6 +2580,40 @@ function customer_masterfile4()
 
         $('.customer-master3').DataTable( {
             "ajax": baseurl + "get_customer4",
+            "bDestroy": true,
+            "columns": [
+                    { "data": "code" },
+                    { "data": "name" },
+                    { "data": "address1" },
+                    { "data": "action" }
+                ],
+            "scrollX": true
+        });
+    }, 1000);
+}
+
+function customer_masterfile5()
+{
+    $(".customermasterfile4").html(
+        'Loading, Please wait...'
+    )
+    setTimeout(function(){
+        $(".customermasterfile4").html(
+            '<table class="table table-bordered customer-master4 compact" width="100%" cellspacing="0">'+
+            '<thead>'+
+                '<tr>'+
+                    '<th>Code</th>'+
+                    '<th>Name</th>'+
+                    '<th>Address</th>'+
+                    '<th>Action</th>'+
+                '</tr>'+
+            '</thead>'+
+            '<tbody></tbody>'+
+        '</table>'
+        );
+
+        $('.customer-master4').DataTable( {
+            "ajax": baseurl + "get_customer5",
             "bDestroy": true,
             "columns": [
                     { "data": "code" },
@@ -1083,6 +2689,29 @@ function selected_customer4(code,name,addr)
         }
     });
 }
+
+function selected_customer_to_ccd(code) {
+    $.ajax({
+      url: baseurl + "transfer_customer_to_ccd",
+      type: "POST",
+      data: { code: code },
+      dataType: "json", // expecting JSON from controller
+      error: function () {
+        alert("Something went wrong.");
+      },
+      success: function (response) {
+        $("#customerModal").modal("hide");
+  
+        swal({
+          title: response.message,
+          type: response.status === "success" ? "success" : response.status === "info" ? "info" : "error",
+          showCancelButton: false,
+          closeOnConfirm: true,
+          timer: 1500
+        });
+      }
+    });
+  }
 
 function accountname(acc_code)
 {
@@ -1235,14 +2864,44 @@ function viewsm_checks(userid,paydate)
     });
 }
 
-function edit_sm_check(ids)
+// function edit_sm_check(ids)
+// {
+//     $.ajax({
+//         url: baseurl + 'edit_sm_check',
+//         type: 'POST',
+//         data: {ids:ids},
+//         error: function() {
+//             alert('error2');
+//         },
+//         success: function(data) {                 
+//             $("#editsm_payment").html(data);
+//         }
+//     });
+// }
+
+// function edit_sm_check_ext(ids)
+// {
+//     $.ajax({
+//         url: baseurl + 'edit_sm_check_ext',
+//         type: 'POST',
+//         data: {ids:ids},
+//         error: function() {
+//             alert('error2');
+//         },
+//         success: function(data) {                 
+//             $("#editsm_payment").html(data);
+//         }
+//     });
+// }
+
+function edit_sm_check(ids,denomid)
 {
     $.ajax({
         url: baseurl + 'edit_sm_check',
         type: 'POST',
-        data: {ids:ids},
+        data: {ids:ids,denomid:denomid},
         error: function() {
-            alert('Something is wrong');
+            alert('error2');
         },
         success: function(data) {                 
             $("#editsm_payment").html(data);
@@ -1250,6 +2909,216 @@ function edit_sm_check(ids)
     });
 }
 
+function edit_sm_check_ext(ids,denomid)
+{
+    $.ajax({
+        url: baseurl + 'edit_sm_check_ext',
+        type: 'POST',
+        data: {ids:ids,denomid:denomid},
+        error: function() {
+            alert('error2');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+function cash_to_check_op(ids)
+{
+    $.ajax({
+        url: baseurl + 'cash_to_check_op',
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            alert('error2');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+function cash_to_check_xt(ids)
+{
+    $.ajax({
+        url: baseurl + 'cash_to_check_xt',
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            alert('error2');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+function edit_sm_check_ldi_op(ids)
+{
+    $.ajax({
+        url: baseurl + 'edit_sm_check_ldi_op',
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            alert('error2');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+function edit_sm_check_ldi_xt(ids)
+{
+    $.ajax({
+        url: baseurl + 'edit_sm_check_ldi_xt',
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            alert('error2');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+function edit_sm_palawan_ldi_xt(ids,denomid)
+{
+    $.ajax({
+        url: baseurl + 'edit_sm_palawan_ldi_xt',
+        type: 'POST',
+        data: {ids:ids,denomid:denomid},
+        error: function() {
+            alert('error2');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+function edit_sm_denom_ldi_op(srr_no)
+{
+    let srr = srr_no.getAttribute("data-srr");
+    $.ajax({
+        url: baseurl + 'edit_sm_denom_ldi_op',
+        type: 'POST',
+        data: {srr:srr},
+        error: function() {
+            alert('error2');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+
+function edit_sm_check_ldi_tax_op(ids)
+{
+    $.ajax({
+        url: baseurl + 'edit_sm_check_ldi_tax_op',
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            alert('error2');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+function edit_sm_check_ldi_tax_op_minus(ids)
+{
+    $.ajax({
+        url: baseurl + 'edit_sm_check_ldi_tax_op_minus',
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            alert('error2');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+function pay_to_ret_op(ids)
+{
+    $.ajax({
+        url: baseurl + 'pay_to_ret_op',
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            alert('error1');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+function ret_to_pay_op(ids) {
+    $.ajax({
+        url: baseurl + "ret_to_pay_op",
+        type: "POST",
+        data: { ids: ids },
+        error: function () {
+        alert("error1");
+        },
+        success: function (data) {
+        $("#editsm_payment").html(data);
+        },
+    });
+}
+
+function edit_sm_check_ldi(ids)
+{
+    $.ajax({
+        url: baseurl + 'edit_sm_check_ldi',
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            alert('error');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+function edit_ret_check_ext(ids,denomid)
+{
+    $.ajax({
+        url: baseurl + 'edit_ret_check_ext',
+        type: 'POST',
+        data: {ids:ids,denomid:denomid},
+        error: function() {
+            alert('error2');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
+
+function edit_ret_check_op(ids,denomid)
+{
+    $.ajax({
+        url: baseurl + 'edit_ret_check_op',
+        type: 'POST',
+        data: {ids:ids,denomid:denomid},
+        error: function() {
+            alert('error2');
+        },
+        success: function(data) {                 
+            $("#editsm_payment").html(data);
+        }
+    });
+}
 $('#checkremarks_submit').on("submit", function(e){
     var formData = new FormData($(this)[0]);
     e.preventDefault();
@@ -1313,39 +3182,105 @@ $('#remarks_submit').on("submit", function(e){
     });
 });
 
-$('#backdate_submit').on("submit", function(e){
+$('#incentives_submit').on("submit", function(e){
     var formData = new FormData($(this)[0]);
     e.preventDefault();
     var flag = 0;
-        $.ajax({
-        url: baseurl + 'save_backdate',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        error: function() {
-            alert('Something is wrong');
+    swal({
+        title: "Proceed adding incentives?",
+        text: "",
+        type: "info",
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
         },
-        success: function(data) {
-            swal({
-                title: "Backdated successfully!",
-                type: "success",
-                showCancelbutton: false,
-                closeModal: false
-            },
-            function(isok) {
-                if(isok){
-                    $("#cashierBackdate").modal("hide");
-                    //$("#cashier_sm_ledger").DataTable.draw();
-
-                    window.location.reload();
+        
+        function(isConfirm) {
+            if(isConfirm)
+            {
+                $.ajax({
+                url: baseurl + 'save_incentives',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {
+                    swal({
+                        title: "Incentives successfully applied!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            $("#smIncentives").modal("hide");
+                            window.location.reload();
+                        }
+                    }
+                    );
                 }
+            });
             }
-            );
         }
-    });
+        );
 });
 
+$('#incentives_edit_submit').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    var flag = 0;
+    swal({
+        title: "Proceed updating incentives?",
+        text: "",
+        type: "info",
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        showLoaderOnConfirm: true
+        },
+        
+        function(isConfirm) {
+            if(isConfirm)
+            {
+                $.ajax({
+                url: baseurl + 'save_incentives',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {
+                    swal({
+                        title: "Incentives successfully applied!",
+                        type: "success",
+                        showCancelbutton: false,
+                        closeModal: false
+                    },
+                    function(isok) {
+                        if(isok){
+                            $("#smIncentives").modal("hide");
+                            window.location.reload();
+                        }
+                    }
+                    );
+                }
+            });
+            }
+        }
+        );
+});
 $('#remittance_submit').on("submit", function(e){
     var formData = new FormData($(this)[0]);
     e.preventDefault();

@@ -12,33 +12,34 @@
                         <thead>
                             <tr style="text-align: center">
                                 <th>Date</th>
-                                <!-- <th>1000</th>
-                                <th>500</th>
-                                <th>200</th>
-                                <th>100</th>
-                                <th>50</th>
-                                <th>20</th>
-                                <th>Coins</th> -->
-                                <td>SRR No.</td>
+                                
+                                <th>SRR No.</th>
                                 <th>DC</th>
                                 <th>PDC</th>
                                 <th>Total Cash</th>
+                                <th>Total Palawan Cash</th>
                                 <th>Total Remittance</th>
                                 
                                 <?php
                                
-                                if ($this->session->userdata('location')!='LDI' && $this->session->userdata('location')!='LDI-CDC') { ?>
+                                if ($this->session->userdata('location')!='LDI' && $this->session->userdata('location')!='LDI-CDC' && $this->session->userdata('location')!='LDI-UDC' ) { ?>
 
                                     <th>Total Collection</th>
                                 
                                 <?php } ?>
                                 <?php
                                
-                                if ($this->session->userdata('location')=='LDI' || $this->session->userdata('location')=='LDI-CDC') { ?>
+                                if ($this->session->userdata('location')=='LDI' || $this->session->userdata('location')=='LDI-CDC' || $this->session->userdata('location')=='LDI-UDC') { ?>
 
                                     <th>Total Returns</th>
-                                    <th>Total W/Tax</th>
+                                    <!-- <th>Total W/Tax</th> -->
                                     <th>Total BO</th>
+                                
+                                <?php } ?>
+                                <?php if ($this->session->userdata('bu')=='XTRUCK' || $this->session->userdata('bu')=='XTRUCK-NETMAN' || $this->session->userdata('bu')=='XTRUCK-MPDI' || $this->session->userdata('bu')=='XTRUCK-NETMAN-BPI') { ?>
+
+                                    <th>SM Incentives</th>
+                                   
                                 
                                 <?php } ?>
                                 <th>Status</th>
@@ -46,64 +47,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($result as $row) { ?>
-                            <tr style="text-align: right">
-                            <td style="text-align: center"><?php echo $row->date_added; ?></td>
-                            <!-- <td><?php echo number_format($row->amt_1000,2); ?></td>
-                            <td><?php echo number_format($row->amt_500,2); ?></td>
-                            <td><?php echo number_format($row->amt_200,2); ?></td>
-                            <td><?php echo number_format($row->amt_100,2); ?></td>
-                            <td><?php echo number_format($row->amt_50,2); ?></td>
-                            <td><?php echo number_format($row->amt_20,2); ?></td>
-                            <td><?php echo number_format($row->total_coins,2); ?></td> -->
-                            <td style="text-align:center"><?php echo $row->denom_id; ?></td>
-                            <td><?php echo number_format($row->total_dc,2); ?></td>
-                            <td><?php echo number_format($row->total_pdc,2); ?></td>
-                            <td><?php echo number_format($row->total_cash,2); ?></td>
-                            <td><?php echo number_format($row->total_collection,2); ?></td>
                             
-                            <?php
-                               
-                                if ($this->session->userdata('location')!='LDI' && $this->session->userdata('location')!='LDI-CDC') { ?>
-
-                                    <td><?php echo number_format($row->total_remittance,2); ?></td>
-                                
-                            <?php } ?>
-                            <?php
-                               
-                                if ($this->session->userdata('location')=='LDI' || $this->session->userdata('location')=='LDI-CDC' ) { ?>
-
-                                    <td><?php echo number_format($row->total_returns,2); ?></td>
-                                    <td><?php echo number_format($row->vat,2); ?></td>
-                                    <td><?php echo number_format($row->bo,2); ?></td>
-                                
-                            <?php } ?>
-                            <td style="text-align: center"><?php if($row->status=="") { echo "<span class='badge badge-danger'>Pending</span>"; } else { echo "<span class='badge badge-primary'>".$row->status."</span>"; } ?></td>
-                            <td align="center">
-                            <?php if($row->date_added==date('Y-m-d') && $row->status=="") { ?>
-                            <a title="Modify Denomination" style="color: green;cursor: pointer" href="<?= base_url('/smdenom_edit'); ?>/<?php echo $row->denom_id; ?>"><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;
-
-                            <?php if($this->session->userdata('location')!='LDI' && $this->session->userdata('location')!='LDI-HORECA' && $this->session->userdata('location')!='LDI-FROZEN' && $this->session->userdata('location')!='LDI-MPDI' && $this->session->userdata('location')!='LDI-CVS' && $this->session->userdata('location')!='LDI-3PS') { ?>
-                                <a title="View Denomination" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewSmDenom" onclick=viewsmdenom_content("<?php echo $row->denom_id; ?>")><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;
-
-                            <?php }else{ ?>
-                                <a title="View Denomination2" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewSmDenomLdi" onclick=viewsmdenom_content_ldi("<?php echo $row->denom_id; ?>")><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;
-                            <?php } ?>
-                            <a title="Delete Denomination" style="color: red;cursor: pointer" onclick=deletedenom_content("<?php echo $row->denom_id; ?>")><i class="fas fa-trash fa-lg"></i></a>&nbsp;&nbsp;
-                            <?php }else{ ?>
-                                <?php if($this->session->userdata('location')!='LDI' && $this->session->userdata('location')!='LDI-CDC') { ?>
-                                <a title="View Denomination" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewSmDenom" onclick=viewsmdenom_content("<?php echo $row->denom_id; ?>")><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;
-
-                                <?php }else{ ?>
-                                    <a title="View Denomination2" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewSmDenomLdi" onclick=viewsmdenom_content_ldi("<?php echo $row->denom_id; ?>")><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;
-                                <?php } ?>
-                            <?php } ?>
-                            <?php if($row->remarks != "") { ?>
-                            <a title="Remarks" style="color: orange;cursor: pointer" data-toggle="modal" data-target="#cashierRemarks" onclick=cashier_remarks2("<?php echo $row->denom_id; ?>")><i class="far fa-comment-dots fa-lg"></i></a>&nbsp;&nbsp;
-                            <?php } ?>
-                            </td>
-                            </tr>
-                            <?php } ?>
                         </tbody>
                     </table>
                 </div>

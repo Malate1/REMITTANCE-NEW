@@ -20,7 +20,14 @@
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>Check No.</th>
-                                <th>Check Date</th>
+                                <?php 
+                                if($row->bu =="XTRUCK" || $row->bu =="XTRUCK-NETMAN" || $row->bu =="XTRUCK-MPDI" || $row->bu =="XTRUCK-NETMAN-BPI") { ?>
+                                    <th>Check Status</th>
+                                    <th>Satellite</th>
+                                <?php } else { ?>
+                                    <th>Check Status</th>
+                                <?php } ?>
+                                <th>Due Date</th>
                                 <th>Bank</th>
                                 <th>Amount</th>
                                 <th>Action</th>
@@ -31,28 +38,92 @@
                             <tr>
                                 <td><?php echo $row2['cus_code']; ?></td>
                                 <td><?php echo $row2['name']; ?></td>
-                                <td align="center"><?php echo $row2['type']; ?></td>
+                                <td align="center"><?php echo $row2['check_type']; ?></td>
                                 <td align="center"><?php echo $row2['check_no']; ?></td>
+                                <?php 
+                                if($row->bu =="XTRUCK" || $row->bu =="XTRUCK-NETMAN" || $row->bu =="XTRUCK-MPDI" || $row->bu =="XTRUCK-NETMAN-BPI") { ?>
+                                    <td align="center">
+                                    <?php 
+                                        $badgeClass = ($row2['status5'] == 'Returned') ? 'badge-danger' : 'badge-success';
+                                        echo '<span class="badge ' . $badgeClass . '">' . $row2['status5'] . '</span>';
+                                    ?>
+                                    </td>
+
+                                    <td align="center">
+                                        <?php if ($row2['is_satellite'] == 1) { ?>
+                                            <span class="badge badge-info">Satellite</span>
+                                        <?php } ?>
+                                    </td>
+                                <?php } else { ?>
+                                    <td align="center">
+                                    <?php 
+                                        $badgeClass = ($row2['status3'] == 'Returned') ? 'badge-danger' : 'badge-success';
+                                        echo '<span class="badge ' . $badgeClass . '">' . $row2['status3'] . '</span>';
+                                    ?>
+                                    </td>
+                                <?php } ?>
                                 <td align="center"><?php echo $row2['due_date']; ?></td>
-                                <td align="center"><?php echo $row2['bank']; ?></td>
-                                <td align="right"><?php echo number_format($row2['amount'],2); ?></td>
+                                <td align="center"><?php echo $row2['check_bank']; ?></td>
+                               <?php 
+                            if($row->bu !="XTRUCK" && $row->bu !="XTRUCK-NETMAN" && $row->bu !="XTRUCK-MPDI" && $row->bu !="XTRUCK-NETMAN-BPI") { ?>
+                                <td align="right"><?php echo number_format($row2['pay_amount'],2); ?></td>
+                            <?php } else { ?>
+                                <td align="right"><?php echo number_format($row2['check_amount'],2); ?></td>
+                            <?php } ?>
                             <?php 
                             if($row2['pay_date']==date('Y-m-d')) { 
-                             echo '<td align="center">';
-                            //  if($row2['status']=="") { 
-                            echo '<a title="Edit Check" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick=edit_sm_check('.$row2['payment_id'].')><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
-                            //   } 
-                            echo '<a title="View Check" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewCasherPaymentModal" onclick=viewcashierpayment_content('.$row2['payment_id'].')><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;';
-                            //  if($row2['status']=="") { 
-                            echo '<a title="Delete Check" style="color: red;cursor: pointer" onclick=deletecashier_content('.$row2['payment_id'].')><i class="fas fa-trash fa-lg"></i></a>';
-                            //   } 
+                                echo '<td align="center">';
+                                if($row2['status']=="") { 
+                                    if($row->bu =="OPLAN") {
+                                        echo '<a title="Edit Check" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" 
+                                        data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick="edit_sm_check('.$row2['pay_id'].', \'' . $result3 . '\')"><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
+
+                                        echo '<a title="View Check" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewCasherPaymentModal" onclick=viewcashierpayment_content_ldi('.$row2['pay_id'].')><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;';
+                                    }
+                                    if(($row->bu =="XTRUCK" || $row->bu =="XTRUCK-NETMAN" || $row->bu =="XTRUCK-MPDI" || $row->bu =="XTRUCK-NETMAN-BPI" ) && $row2['status5'] != 'Returned') {
+                                    // if($row->bu =="XTRUCK" || $row->bu =="XTRUCK-NETMAN" || $row->bu =="XTRUCK-MPDI" || $row->bu =="XTRUCK-NETMAN-BPI") {
+                                        echo '<a title="Edit Check2" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick="edit_sm_check_ext('.$row2['pay_id'].', \'' . $result3 . '\')"><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
+
+                                        // echo '<a title="Delete Check2" style="color: red;cursor: pointer" onclick="deletecashier_content(' . $row2['payment_id'] . ', \'' . $result3 . '\')"><i class="fas fa-trash fa-lg"></i></a>';
+
+                                        echo '<a title="View Check" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewCasherPaymentModal" onclick=viewcashierpayment_content_ldi_ext('.$row2['pay_id'].')><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;';
+                                    }
+                                }else{
+                                    if($row->bu =="XTRUCK" || $row->bu =="XTRUCK-NETMAN" || $row->bu =="XTRUCK-MPDI" || $row->bu =="XTRUCK-NETMAN-BPI") {
+                                        // echo '<a title="Edit Check2" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick="edit_sm_check_ext('.$row2['pay_id'].', \'' . $result3 . '\')"><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
+
+                                        echo '<a title="View Check" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewCasherPaymentModal" onclick=viewcashierpayment_content_ldi_ext('.$row2['pay_id'].')><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;';
+                                    }
+                                } 
+                                
+                                // if($row2['status']=="") { 
+                                //     echo '<a title="Delete Check" style="color: red;cursor: pointer" onclick=deletecashier_content_ldi('.$row2['pay_id'].')><i class="fas fa-trash fa-lg"></i></a>';
+                                // } 
                             echo '</td>';
-                              } 
-                            else 
-                            { 
+                            }else { 
                             echo '<td align="center">';
-                                  echo '<a title="Edit Check" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick=edit_sm_check('.$row2['payment_id'].')><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
-                                  echo '<a title="View Check" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewCasherPaymentModal" onclick=viewcashierpayment_content('.$row2['payment_id'].')><i class="fas fa-eye fa-lg"></i></a>';
+                                if($row2['status']=="") { 
+                                    if($row->bu =="OPLAN") {
+                                        echo '<a title="Edit Check" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick="edit_sm_check('.$row2['pay_id'].', \'' . $result3 . '\')"><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
+
+                                        echo '<a title="View Check" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewCasherPaymentModal" onclick=viewcashierpayment_content_ldi('.$row2['pay_id'].')><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;';
+                                    }
+                                    if($row->bu =="XTRUCK" || $row->bu =="XTRUCK-NETMAN" || $row->bu =="XTRUCK-MPDI" || $row->bu =="XTRUCK-NETMAN-BPI") {
+                                        // if($row2['status5'] != 'Returned Old'){
+                                            echo '<a title="Edit Check2" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick="edit_sm_check_ext('.$row2['pay_id'].', \'' . $result3 . '\')"><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
+                                        // }
+                                        
+
+                                        echo '<a title="View Check" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewCasherPaymentModal" onclick=viewcashierpayment_content_ldi_ext('.$row2['pay_id'].')><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;';
+                                    }
+                                }else{
+                                    if($row->bu =="XTRUCK" || $row->bu =="XTRUCK-NETMAN" || $row->bu =="XTRUCK-MPDI" || $row->bu =="XTRUCK-NETMAN-BPI") {
+                                        // echo '<a title="Edit Check2" style="color: green;cursor: pointer" data-toggle="modal" data-controls-modal="#editSmCheck" data-backdrop="static" data-keyboard="false" data-target="#editSmCheck" onclick="edit_sm_check_ext('.$row2['pay_id'].', \'' . $result3 . '\')"><i class="fas fa-pen fa-lg"></i></a>&nbsp;&nbsp;';
+
+                                        echo '<a title="View Check" style="color: skyblue;cursor: pointer" data-toggle="modal" data-target="#viewCasherPaymentModal" onclick=viewcashierpayment_content_ldi_ext('.$row2['pay_id'].')><i class="fas fa-eye fa-lg"></i></a>&nbsp;&nbsp;';
+                                    }
+                                }  
+                                  
                             echo '</td>'; 
                             } 
                             echo '</tr>'; 

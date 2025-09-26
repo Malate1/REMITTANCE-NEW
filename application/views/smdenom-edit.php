@@ -1,10 +1,19 @@
 <main>
     <div class="container-fluid">
         <h4 class="mt-4">Denomination</h4><br/>
-
+        <?php
+            $location = $this->session->userdata('location');
+            $bu = $this->session->userdata('bu');
+            $user_id = $this->session->userdata('user_id');
+            $id_no = $this->session->userdata('id_no');
+        ?>
         <!-- <div class="col-xl-6"> -->
         <form method="post" id="edit_sm_denom">
             <input type="hidden" class="form-control" style="text-align: center;background-color: white" name="id" id="id" placeholder="id" value="<?php echo $result->denom_id; ?>">
+            <input type="hidden" class="form-control" style="text-align: center; background-color: white" name="location" id="location" value="<?php echo $location; ?>" readonly>
+                    <input type="hidden" class="form-control" style="text-align: center; background-color: white" name="userid" id="userid" value="<?php echo $user_id; ?>" readonly>
+                    <input type="hidden" class="form-control" style="text-align: center; background-color: white" name="bu" id="bu" value="<?php echo $bu; ?>" readonly>
+                    <input type="hidden" class="form-control" style="text-align: center; background-color: white" name="sm_code" id="sm_code" value="<?php echo $id_no; ?>" readonly>
             <div class="form-row" style="text-align: center;font-weight: 700;font-size: 20px">
                 <div class="form-group col-md-4" style="width:150px">
                     <label for="note-1000">Notes</label>
@@ -81,7 +90,7 @@
                 </div>
             </div>
             <div class="form-row" style="text-align: center;font-weight: 700;font-size: 17px">
-                <div class="form-group col-md-12" style="width:550px">
+                <div class="form-group col-12 col-md-6" style="width:550px">
                     <label for="coins">Total Coins Amount</label>
                     <input type="text" min="0.1" step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white" name="coins" id="coins" value="<?php if($result->total_coins==0){echo "";}else{echo number_format($result->total_coins,2);} ?>" oninput="calculatecoins()">
                 </div>
@@ -121,7 +130,7 @@
                 </div>
             </div>
             <!-- <div class="form-row" style="text-align: center;font-weight: 700;font-size: 17px">
-                <div class="form-group col-md-12" style="width:550px">
+                <div class="form-group col-12 col-md-6" style="width:550px">
                     <label for="totalcash">Total Cash Amount</label>
                     <input type="numeric" style="text-align: center;background-color: white" class="form-control" name="totalcash" id="totalcash" placeholder="0.00" autocomplete="off" value="<?php echo number_format($result->total_cash,2); ?>" readonly>
                 </div>
@@ -141,7 +150,7 @@
                     <input type="numeric" style="text-align: center;background-color: white; font-weight: bold;" class="form-control" name="totalcash_ldi" id="totalcash_ldi" placeholder="0.00" oninput="calculatecash()" autocomplete="off" readonly>
                 </div>
                 <?php } else{ ?>
-                    <div class="form-group col-md-12" style="width:550px">
+                    <div class="form-group col-12 col-md-12" style="width:550px">
                         <label for="totalcash">Total Cash Amount</label>
                             <input type="text" style="text-align: center;background-color: white" class="form-control" name="totalcash" id="totalcash" placeholder="0.00" autocomplete="off" value="<?php echo number_format($result->total_cash,2); ?>" readonly>
                             
@@ -149,72 +158,97 @@
                 <?php } ?>
             </div>
 
-            <?php if($this->session->userdata('bu')!='OPLAN') { ?>
+            <?php if($this->session->userdata('bu')!='OPLAN' && $this->session->userdata('bu')!='MPDI') { ?>
             <div class="form-row" style="text-align: center;font-weight: 700;font-size: 17px">
-                <div class="form-group col-md-12" style="width:550px">
-                <label for="totalcash">Total Remittance Amount</label>
-                    <input type="numeric" style="text-align: center;background-color: white" class="form-control" name="totalcollection" id="totalcollection" placeholder="0.00" autocomplete="off" value="<?php echo number_format($result->total_collection,2); ?>" readonly>
+                <div class="form-group col-12 col-md-6" style="width:550px">
+                    <label for="totalcash">Total Remittance Amount</label>
+                    <input type="numeric" style="text-align: center;background-color: white; font-weight: bold;" class="form-control" name="totalcollection2" id="totalcollection2" placeholder="0.00" autocomplete="off" readonly>
+                
                 </div>
             </div>
             <div class="form-row" style="text-align: center;font-weight: 700;font-size: 17px">
-                <div class="form-group col-md-12" style="width:550px">
-                    <label for="coins">Total Collection Amount</label>
+                <div class="form-group col-12 col-md-6" style="width:550px">
+                    <label for="coins">Total Accountability Amount</label>
                     <?php if($this->session->userdata('bu')!='OPLAN') { ?>
-                        <input type="text" min="0.0" step="any" class="form-control" style="text-align: center;background-color: white" name="totalremittance" id="totalremittance" autocomplete="off" value="<?php echo number_format($result->total_remittance,2); ?>" required>
+                        <input type="text" min="0.0" step="any" class="form-control" style="text-align: center;background-color: white" name="totalremittance" id="totalremittance" autocomplete="off" autofocus="off" value="<?php echo number_format($result->total_remittance,2); ?>" required>
+
+
                     <?php }else{ ?>
-                        <input type="text" min="0.0" step="any" class="form-control" style="text-align: center;background-color: white" name="totalremittance" id="totalremittance" autocomplete="off" value="<?php echo number_format($result->total_remittance,2); ?>" required readonly>
+                        <input type="text" min="0.0" step="any" class="form-control" style="text-align: center;background-color: white" name="totalremittance" id="totalremittance" autocomplete="off" autofocus="off" value="<?php echo number_format($result->total_remittance,2); ?>" required readonly>
                     <?php } ?>
                 </div>
             </div>
             <?php }else{ ?>
 
             <div class="form-row" style="text-align: center;font-weight: 700;font-size: 17px">
-                <div class="form-group col-md-12" style="width:550px">
+                <div class="form-group col-12 col-md-12" style="width:550px">
                 <label for="totalcash">Total Remittance Amount</label>
-                    <input type="numeric" style="text-align: center;background-color: white" class="form-control" name="totalcollection" id="totalcollection" placeholder="0.00" autocomplete="off" readonly>
+                    <input type="numeric" style="text-align: center;background-color: white" class="form-control" name="totalcollection" id="totalcollection" value="<?php echo number_format($result->total_remittance,2); ?>" autocomplete="off" readonly>
+                </div>
+
+                <div class="form-group col-12 col-md-6">
+                    <label for="totalcash">Total Amount on Manual SRR </label>
+                    <input type="numeric" required style="text-align: center;background-color: white; font-weight: bold;" class="form-control" name="totalsrr" id="totalsrr" placeholder="0.00" autocomplete="off" value="<?php echo number_format(@$result->total_srr,2); ?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46">
+                    
+                </div>
+
+                <div class="form-group col-12 col-md-6">
+                    <label for="totalcash">SRR No. (on manual SRR)</label>
+                    <input type="text" min="0.0" step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white" name="manualsrr" id="manualsrr" value="<?php echo @$result->manualsrr; ?>" required>
+                    
+                </div>
+
+                <div class="form-group col-12 col-md-6">
+                    <label for="coins">Total Returns Amount</label>
+                        
+                        <input type="text" min="0.0" step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white;" name="totalreturns" id="totalreturns" oninput="calculatetotal()" value="<?php echo number_format(@$result->total_returns,2); ?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46">
+                        <div id="error-message3" style="color: red;"></div>
+
+                </div>
+
+                <div class="form-group col-12 col-md-6">
+                    <label for="palawan"> Total Palawan Remittance</label>
+                        
+                        <input type="text" min="0.0" step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white;" name="totalpalawan" id="totalpalawan" value="<?php echo number_format(@$result->total_palawan,2); ?>"  onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46">
+                    
+                </div>
+
+                <div class="form-group col-12 col-md-6">
+                    <label for="coins">Total W/Tax Amount</label>
+                    <input type="text"  step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white;" name="totaltax" id="totaltax" oninput="calculatetotal()" value="<?php echo number_format(@$result->vat,2); ?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46">
+                    <div id="error-message" style="color: red;"></div>
+                </div>
+
+                <div class="form-group col-12 col-md-6">
+                <label for="coins">Total B.O Amount</label>
+                    
+                    <input type="text"  step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white;" name="totalbo" id="totalbo" oninput="calculatetotal()" value="<?php echo number_format(@$result->bo,2); ?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46">
+                    <div id="error-message2" style="color: red;"></div>
                 </div>
             </div>
             <div class="form-row" style="text-align: center;font-weight: 700;font-size: 17px; display: none;">
-                <div class="form-group col-md-12" style="width:550px">
+                <div class="form-group col-12 col-md-6" style="width:550px">
                     <label for="coins">Total Accountability Amount</label>
                     <?php if($this->session->userdata('bu')!='OPLAN') { ?>
-                        <input type="text" min="0.0" step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white" name="totalremittance" id="totalremittance" required>
+                        <input type="text" min="0.0" step="any" class="form-control" autocomplete="off"  autofocus="off" style="text-align: center;background-color: white" name="totalremittance" id="totalremittance" >
                     <?php }else{ ?>
-                        <input type="text" min="0.0" step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white; font-weight: bold; display: none;" name="totalremittance" id="totalremittance" required readonly>
+                        <input type="text" min="0.0" step="any" class="form-control" autocomplete="off"  autofocus="off" style="text-align: center;background-color: white; font-weight: bold; display: none;" name="totalremittance" id="totalremittance"  readonly>
                     <?php } ?>
                 </div>
             </div>
             <?php } ?>
 
-            <!-- <?php if($this->session->userdata('bu')!='OPLAN') { ?>
-                <div class="form-row" style="text-align: center;font-weight: 700;font-size: 17px">
-                    <div class="form-group col-md-12" style="width:550px">
-                        <label for="coins">Total Returns Amount</label>
-                            
-                            <input type="text" min="0.0" step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white; font-weight: bold;" name="totalreturns" id="totalreturns" required readonly>
-
-                            <input type="hidden" class="form-control" autocomplete="off" style="text-align: center;background-color: white; font-weight: bold;" name="totalreturns_no" id="totalreturns_no" required readonly>
-                            <input type="hidden" class="form-control" autocomplete="off" style="text-align: center;background-color: white; font-weight: bold;" name="totalpay_id" id="totalpay_id" required readonly>
-                        
-                    </div>
-                </div>
-            <?php }else{ ?>
-
-                <input type="text" min="0.0" step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white; font-weight: bold; display: none;" name="totalreturns" id="totalreturns" value="" required readonly>
-                <input type="text" min="0.0" step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white; font-weight: bold; display: none;" name="totalreturns_no" id="totalreturns_no" value="" required readonly>
-                <input type="text" min="0.0" step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white; font-weight: bold; display: none;" name="totalpay_id" id="totalpay_id" value="" required readonly>
-            <?php } ?> -->
-
+            
             <input type="hidden" value="<?php echo date('Y-m-d'); ?>" class="form-control" name="date" id="date" autocomplete="off">
-            <?php if($this->session->userdata('location')!='LDI') { ?>
+            <?php if($this->session->userdata('bu')!='OPLAN' && $this->session->userdata('bu')!='XTRUCK' && $this->session->userdata('bu')!='XTRUCK-NETMAN' && $this->session->userdata('bu')!='MPDI') { ?>
             <div class="form-row" style="text-align: center;font-weight: 700;font-size: 17px">
-                <div class="form-group col-md-12" style="width:550px">
+                <div class="form-group col-12 col-md-6" style="width:550px">
                     <label for="coins">Expenses Amount</label>
                     <input type="text" min="0.0" step="any" class="form-control" autocomplete="off" style="text-align: center;background-color: white" name="expenses_amt" value="<?php echo number_format($result->expenses_amt,2); ?>" id="expenses_amt">
                 </div>
             </div>
             <div class="form-row" style="text-align: center;font-weight: 700;font-size: 17px">
-                <div class="form-group col-md-12" style="width:550px">
+                <div class="form-group col-12 col-md-6" style="width:550px">
                 <label for="totalcash">Expenses</label>
                 <textarea class="form-control" id="expenses" name="expenses" autocomplete="off" rows="3"><?php echo $result->expenses; ?></textarea>
                 </div>
